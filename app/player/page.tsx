@@ -5,12 +5,17 @@ export default function PlayerPage() {
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
-    // Il browser blocca il mixed-content, ma a volte il tag <audio> 
-    // permette di forzare la sorgente se non è gestita tramite fetch
-    if (audioRef.current) {
-      audioRef.current.src = "http://srv1.goodsoundstream.com:3153/;";
-      audioRef.current.load();
-    }
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    // Aggiungiamo un listener per vedere cosa succede davvero
+    audio.addEventListener('error', (e) => {
+      console.error("Errore del player rilevato:", e);
+      alert("Il browser sta bloccando lo stream. Controlla la console (F12) per l'errore esatto.");
+    });
+
+    audio.src = "http://srv1.goodsoundstream.com:3153/;";
+    audio.load();
   }, []);
 
   return (
@@ -19,14 +24,9 @@ export default function PlayerPage() {
       <audio 
         ref={audioRef}
         controls 
-        autoPlay 
-        // L'attributo crossOrigin "anonymous" aiuta a gestire le chiamate Shoutcast
-        crossOrigin="anonymous"
-        style={{ width: '300px' }}
+        autoPlay
+        style={{ width: '300px', cursor: 'pointer' }}
       />
-      <p style={{ marginTop: '10px', fontSize: '12px', color: '#666' }}>
-        Se non parte, clicca sul tasto 'Play'
-      </p>
     </div>
   )
 }
