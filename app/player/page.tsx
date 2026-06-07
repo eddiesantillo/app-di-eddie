@@ -1,33 +1,24 @@
 'use client'
-import { useEffect, useRef } from 'react';
 
 export default function PlayerPage() {
-  const audioRef = useRef<HTMLAudioElement>(null);
-
-  useEffect(() => {
-    // Forza il caricamento al mount
-    if (audioRef.current) {
-      audioRef.current.load();
-    }
-  }, []);
-
   return (
     <div style={{ 
       display: 'flex', 
       flexDirection: 'column', 
       alignItems: 'center', 
       justifyContent: 'center', 
-      minHeight: '80vh', 
-      textAlign: 'center' 
+      height: '100vh', 
+      width: '100%' 
     }}>
       <h2 style={{ color: '#ff4444', marginBottom: '20px' }}>Radio Eddie</h2>
+      
       <audio 
-        ref={audioRef}
         controls 
         autoPlay 
-        style={{ width: '80%', maxWidth: '400px' }}
+        style={{ width: '300px' }}
       >
-        <source src="http://srv1.goodsoundstream.com:3153/;" type="audio/mpeg" />
+        <source src="http://srv1.goodsoundstream.com:3153" type="audio/mpeg" />
+        Il tuo browser non supporta lo streaming.
       </audio>
     </div>
   )
