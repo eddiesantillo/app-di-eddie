@@ -7,9 +7,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="it">
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#1a1a1a" />
+      </head>
       <body style={{ backgroundColor: '#1a1a1a', color: '#ffffff', fontFamily: 'Arial, sans-serif', margin: 0, padding: 0 }}>
         
-        {/* Intestazione con logo che respira nel rosso */}
+        {/* Intestazione con logo e tocco di rosso */}
         <header style={{ padding: '40px 20px', textAlign: 'center' }}>
           <img 
             src="/logo.png" 
