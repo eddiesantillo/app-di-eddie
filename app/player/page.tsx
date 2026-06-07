@@ -1,39 +1,49 @@
+'use client'
+import { useEffect, useRef } from 'react';
+
 export default function PlayerPage() {
-    return (
-      <div style={{ 
-        textAlign: 'center', 
-        marginTop: '50px', 
-        color: '#ffffff',
-        fontFamily: 'Arial, sans-serif' 
-      }}>
-        <h2 style={{ color: '#ff4444', fontSize: '2rem' }}>Radio Eddie</h2>
-        <p style={{ opacity: 0.8 }}>Streaming in diretta</p>
-        
-        <div style={{ 
-          marginTop: '40px', 
-          padding: '30px', 
-          backgroundColor: '#1a1a1a', 
-          borderRadius: '15px',
-          border: '1px solid #333',
-          maxWidth: '400px',
-          margin: '40px auto'
-        }}>
-          {/* Player audio configurato per il proxy */}
-          <audio controls style={{ width: '100%' }}>
-            <source src="/api/stream" type="audio/mpeg" />
-            Il tuo browser non supporta lo streaming audio.
-          </audio>
-          
-          <p style={{ fontSize: '0.85rem', marginTop: '15px', opacity: 0.6 }}>
-            Premi play per ascoltare il flusso in diretta
-          </p>
-        </div>
-  
-        <div style={{ marginTop: '30px' }}>
-          <a href="/" style={{ color: '#ff4444', textDecoration: 'underline' }}>
-            Torna alla Home
-          </a>
-        </div>
-      </div>
-    )
-  }
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    // Shoutcast richiede di evitare il precaricamento pesante
+    audio.preload = "none";
+
+    const recover = () => {
+      console.log("Tentativo di recupero stream...");
+      audio.load();
+      audio.play().catch(() => {});
+    };
+
+    // Monitoraggio aggressivo: se si blocca, ricarica
+    const interval = setInterval(() => {
+      if (audio.paused || audio.ended) {
+        recover();
+      }
+    }, 5000);
+
+    audio.addEventListener('error', recover);
+
+    return () => {
+      clearInterval(interval);
+      audio.removeEventListener('error', recover);
+    };
+  }, []);
+
+  return (
+    <div style={{ textAlign: 'center', padding: '50px' }}>
+      <h2 style={{ color: '#ff4444' }}>Radio Eddie</h2>
+      <audio 
+        ref={audioRef}
+        controls 
+        autoPlay 
+        style={{ width: '100%', maxWidth: '400px', marginTop: '20px' }}
+      >
+        {/* Usiamo ;/; per segnalare al server che è uno stream Shoutcast */}
+        <source src="http://srv1.goodsoundstream.com:3153/;" type="audio/mpeg" />
+      </audio>
+    </div>
+  )
+}
