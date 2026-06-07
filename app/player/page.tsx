@@ -17,7 +17,8 @@ export default function PlayerPage() {
         autoPlay 
         style={{ width: '300px' }}
       >
-        <source src="http://srv1.goodsoundstream.com:3153" type="audio/mpeg" />
+        {/* Usiamo il percorso corretto basato sul tuo file */}
+        <source src="/api/stream" type="audio/mpeg" />
         Il tuo browser non supporta lo streaming.
       </audio>
     </div>
