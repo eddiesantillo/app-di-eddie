@@ -1,34 +1,31 @@
-'use client'
+'use client';
 import { useEffect, useState } from 'react';
 import { db } from '../../lib/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 
 export default function BioPage() {
-  const [bio, setBio] = useState('Caricamento biografia...');
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const docRef = doc(db, "content", "bio");
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setBio(docSnap.data().descrizione);
-        } else {
-          setBio("Biografia non ancora inserita.");
-        }
-      } catch (e) {
-        setBio("Errore nel caricamento.");
-      }
-    }
-    fetchData();
+    getDoc(doc(db, "content", "bio")).then(snap => {
+      if (snap.exists()) setData(snap.data());
+      setLoading(false);
+    });
   }, []);
 
+  if (loading) return <div>Caricamento...</div>;
+  // Qui controlliamo che 'sezioni' esista
+  if (!data || !data.sezioni) return <div>Nessun contenuto trovato.</div>;
+
   return (
-    <div style={{ padding: '50px', color: '#fff', textAlign: 'center', maxWidth: '800px', margin: '0 auto' }}>
-      <h2 style={{ color: '#ff4444' }}>Biografia</h2>
-      <div style={{ marginTop: '30px', whiteSpace: 'pre-wrap', lineHeight: '1.6' }}>
-        {bio}
-      </div>
-    </div>
-  )
+    <main style={{ padding: '40px', maxWidth: '800px', margin: '0 auto', color: '#fff', background: '#000' }}>
+      {data.sezioni.map((s: any, i: number) => (
+        <section key={i} style={{ marginBottom: '40px' }}>
+          <h2 style={{ borderBottom: '2px solid #ff0000', paddingBottom: '10px' }}>{s.titolo}</h2>
+          <p style={{ lineHeight: '1.8', fontSize: '1.2rem' }}>{s.testo}</p>
+        </section>
+      ))}
+    </main>
+  );
 }
