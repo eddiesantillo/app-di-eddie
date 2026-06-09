@@ -1,14 +1,14 @@
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
-  const streamUrl = 'http://srv1.goodsoundstream.com:3153/;stream'; 
+  // L'aggiunta di /; è fondamentale per Shoutcast
+  const streamUrl = 'http://srv1.goodsoundstream.com:3153/;'; 
   
   try {
     const response = await fetch(streamUrl, {
       headers: { 'Accept': 'audio/mpeg' }
     });
 
-    // Trasformiamo la risposta in un ReadableStream
     return new Response(response.body, {
       headers: {
         'Content-Type': 'audio/mpeg',

@@ -12,7 +12,7 @@ export default function BioPage() {
         const docRef = doc(db, "content", "bio");
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          setBio(docSnap.data().text);
+          setBio(docSnap.data().descrizione);
         } else {
           setBio("Biografia non ancora inserita.");
         }
