@@ -24,7 +24,7 @@ export default function Home() {
         {/* Pulsante Radio con Immagine */}
         <Link href="/player">
           <Image 
-            src="/radio.jpg" 
+            src="/radio.jpeg" 
             alt="Radio" 
             width={200} 
             height={100} 
