@@ -8,9 +8,7 @@ export default function BioPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Puntiamo al documento esatto che hai creato in Firebase
     const docRef = doc(db, "content", "Eddie Santillo");
-    
     getDoc(docRef).then(snap => {
       if (snap.exists()) {
         setData(snap.data());
@@ -25,7 +23,21 @@ export default function BioPage() {
   const sezioni = data.sezioni || [];
 
   return (
-    <main style={{ padding: '40px', maxWidth: '800px', margin: '0 auto', color: '#fff', background: '#000' }}>
+    <main style={{ padding: '40px', maxWidth: '800px', margin: '0 auto', color: '#fff', background: '#000', minHeight: '100vh' }}>
+      {/* Pulsante per tornare al sito pubblico */}
+      <div style={{ marginBottom: '20px' }}>
+        <a href="/" style={{ 
+          color: '#fff', 
+          textDecoration: 'none', 
+          fontSize: '1rem',
+          padding: '10px',
+          border: '1px solid #fff',
+          display: 'inline-block'
+        }}>
+          ← Torna al sito
+        </a>
+      </div>
+
       {sezioni.length > 0 ? (
         sezioni.map((s: any, i: number) => (
           <section key={i} style={{ marginBottom: '40px' }}>
