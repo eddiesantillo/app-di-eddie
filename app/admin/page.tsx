@@ -32,26 +32,36 @@ export default function AdminPage() {
     }
   };
 
-  if (loading) return <div>Caricamento...</div>;
+  if (loading) return <div style={{ color: '#fff' }}>Caricamento...</div>;
+
+  // Stile comune per gli input per renderli leggibili
+  const inputStyle = { 
+    width: '100%', 
+    marginBottom: '10px', 
+    padding: '10px', 
+    background: '#333', // Grigio scuro per contrasto
+    color: '#fff',      // Testo bianco
+    border: '1px solid #555' 
+  };
 
   return (
     <main style={{ padding: '20px', background: '#111', color: '#fff' }}>
       <h1>Pannello Admin</h1>
       {sezioni.map((s, i) => (
-        <div key={i} style={{ marginBottom: '20px', border: '1px solid #ff0000', padding: '10px' }}>
-          <label>Titolo (es. Biografia):</label>
+        <div key={i} style={{ marginBottom: '20px', border: '1px solid #ff0000', padding: '15px' }}>
+          <label style={{ display: 'block', marginBottom: '5px' }}>Titolo:</label>
           <input value={s.titolo} onChange={(e) => {
             const newS = [...sezioni]; newS[i].titolo = e.target.value; setSezioni(newS);
-          }} style={{ width: '100%', marginBottom: '10px', color: '#000' }} />
+          }} style={inputStyle} />
           
-          <label>Testo:</label>
+          <label style={{ display: 'block', marginBottom: '5px' }}>Testo:</label>
           <textarea value={s.testo} onChange={(e) => {
             const newS = [...sezioni]; newS[i].testo = e.target.value; setSezioni(newS);
-          }} style={{ width: '100%', height: '150px', color: '#000' }} />
+          }} style={{ ...inputStyle, height: '150px' }} />
         </div>
       ))}
-      <button onClick={() => setSezioni([...sezioni, { titolo: '', testo: '' }])}>+ Aggiungi Sezione</button>
-      <button onClick={handleUpdate} style={{ marginLeft: '10px', background: '#ff0000', color: '#fff' }}>SALVA TUTTO</button>
+      <button onClick={() => setSezioni([...sezioni, { titolo: '', testo: '' }])} style={{ padding: '10px' }}>+ Aggiungi Sezione</button>
+      <button onClick={handleUpdate} style={{ marginLeft: '10px', padding: '10px', background: '#ff0000', color: '#fff', border: 'none' }}>SALVA TUTTO</button>
     </main>
   );
 }
