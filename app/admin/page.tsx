@@ -32,36 +32,51 @@ export default function AdminPage() {
     }
   };
 
+  // Funzione per eliminare la sezione specifica
+  const rimuoviSezione = (index: number) => {
+    const nuoveSezioni = sezioni.filter((_, i) => i !== index);
+    setSezioni(nuoveSezioni);
+  };
+
   if (loading) return <div style={{ color: '#fff' }}>Caricamento...</div>;
 
-  // Stile comune per gli input per renderli leggibili
   const inputStyle = { 
-    width: '100%', 
-    marginBottom: '10px', 
-    padding: '10px', 
-    background: '#333', // Grigio scuro per contrasto
-    color: '#fff',      // Testo bianco
-    border: '1px solid #555' 
+    width: '100%', marginBottom: '10px', padding: '10px', 
+    background: '#333', color: '#fff', border: '1px solid #555' 
   };
 
   return (
-    <main style={{ padding: '20px', background: '#111', color: '#fff' }}>
+    <main style={{ padding: '20px', background: '#111', color: '#fff', minHeight: '100vh' }}>
       <h1>Pannello Admin</h1>
       {sezioni.map((s, i) => (
         <div key={i} style={{ marginBottom: '20px', border: '1px solid #ff0000', padding: '15px' }}>
-          <label style={{ display: 'block', marginBottom: '5px' }}>Titolo:</label>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+            <label>Sezione {i + 1}</label>
+            <button 
+              onClick={() => rimuoviSezione(i)}
+              style={{ background: '#700', color: '#ffaaaa', border: '1px solid #700', padding: '5px 10px', cursor: 'pointer' }}
+            >
+              Elimina Sezione
+            </button>
+          </div>
+          
           <input value={s.titolo} onChange={(e) => {
             const newS = [...sezioni]; newS[i].titolo = e.target.value; setSezioni(newS);
-          }} style={inputStyle} />
+          }} style={inputStyle} placeholder="Titolo" />
           
-          <label style={{ display: 'block', marginBottom: '5px' }}>Testo:</label>
           <textarea value={s.testo} onChange={(e) => {
             const newS = [...sezioni]; newS[i].testo = e.target.value; setSezioni(newS);
-          }} style={{ ...inputStyle, height: '150px' }} />
+          }} style={{ ...inputStyle, height: '120px' }} placeholder="Testo" />
         </div>
       ))}
-      <button onClick={() => setSezioni([...sezioni, { titolo: '', testo: '' }])} style={{ padding: '10px' }}>+ Aggiungi Sezione</button>
-      <button onClick={handleUpdate} style={{ marginLeft: '10px', padding: '10px', background: '#ff0000', color: '#fff', border: 'none' }}>SALVA TUTTO</button>
+      
+      <button onClick={() => setSezioni([...sezioni, { titolo: '', testo: '' }])} style={{ padding: '10px' }}>
+        + Aggiungi nuova sezione
+      </button>
+      
+      <button onClick={handleUpdate} style={{ marginLeft: '10px', padding: '10px', background: '#ff0000', color: '#fff', border: 'none' }}>
+        SALVA TUTTO
+      </button>
     </main>
   );
 }
