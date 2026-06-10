@@ -4,87 +4,73 @@ import { db } from '../../lib/firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 export default function AdminPage() {
-  // Nota: ho aggiunto 'tipo' di default a 'testo'
-  const [sezioni, setSezioni] = useState([{ titolo: '', testo: '', tipo: 'testo' }]);
+  const [view, setView] = useState<'menu' | 'bio' | 'radio' | 'calendario'>('menu');
+  const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const docRef = doc(db, "content", "Eddie Santillo");
-        const snap = await getDoc(docRef);
-        // Se il DB ha già dati vecchi, il campo 'tipo' potrebbe mancare, aggiungiamolo al volo
-        if (snap.exists() && snap.data().sezioni) {
-          const datiConTipo = snap.data().sezioni.map((s: any) => ({
-            ...s,
-            tipo: s.tipo || 'testo'
-          }));
-          setSezioni(datiConTipo);
-        }
-      } catch (error) {
-        console.error("Errore caricamento:", error);
+      const snap = await getDoc(doc(db, "content", "Eddie Santillo"));
+      if (snap.exists()) {
+        setData(snap.data());
+      } else {
+        // Valori di default se il documento risultasse vuoto
+        setData({ bio: { titolo: '', testo: '' }, radio: { url: '' }, calendario: [] });
       }
       setLoading(false);
     };
     fetchData();
   }, []);
 
-  const handleUpdate = async () => {
-    try {
-      await setDoc(doc(db, "content", "Eddie Santillo"), { sezioni: sezioni });
-      alert("Salvato correttamente!");
-    } catch (e) {
-      alert("Errore nel salvataggio");
-    }
+  const save = async () => {
+    await setDoc(doc(db, "content", "Eddie Santillo"), data);
+    alert("Salvato correttamente!");
   };
 
-  const rimuoviSezione = (index: number) => {
-    setSezioni(sezioni.filter((_, i) => i !== index));
-  };
+  if (loading) return <div style={{color: '#fff', padding: '20px'}}>Caricamento...</div>;
 
-  if (loading) return <div style={{ color: '#fff' }}>Caricamento...</div>;
-
-  const inputStyle = { 
-    width: '100%', marginBottom: '10px', padding: '10px', 
-    background: '#333', color: '#fff', border: '1px solid #555' 
-  };
+  if (view === 'menu') return (
+    <main style={{ padding: '40px', textAlign: 'center', background: '#111', color: '#fff', minHeight: '100vh' }}>
+      <h1>Dashboard Amministrativa</h1>
+      <div style={{ display: 'grid', gap: '20px', maxWidth: '300px', margin: 'auto' }}>
+        <button onClick={() => setView('bio')} style={{padding: '15px'}}>Gestisci Bio</button>
+        <button onClick={() => setView('radio')} style={{padding: '15px'}}>Gestisci Radio</button>
+        <button onClick={() => setView('calendario')} style={{padding: '15px'}}>Gestisci Calendario</button>
+      </div>
+    </main>
+  );
 
   return (
     <main style={{ padding: '20px', background: '#111', color: '#fff', minHeight: '100vh' }}>
-      <h1>Pannello Admin</h1>
-      {sezioni.map((s, i) => (
-        <div key={i} style={{ marginBottom: '20px', border: '1px solid #ff0000', padding: '15px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-            <label>Sezione {i + 1}</label>
-            <button onClick={() => rimuoviSezione(i)} style={{ background: '#700', color: '#ffaaaa', border: 'none', cursor: 'pointer' }}>Elimina</button>
-          </div>
-          
-          <input value={s.titolo} onChange={(e) => {
-            const newS = [...sezioni]; newS[i].titolo = e.target.value; setSezioni(newS);
-          }} style={inputStyle} placeholder="Titolo" />
-
-          {/* Scelta tipo sezione */}
-          <select value={s.tipo} onChange={(e) => {
-            const newS = [...sezioni]; newS[i].tipo = e.target.value; setSezioni(newS);
-          }} style={{ ...inputStyle, marginBottom: '10px' }}>
-            <option value="testo">Testo Normale</option>
-            <option value="radio">Radio (URL Stream)</option>
-          </select>
-          
-          <textarea value={s.testo} onChange={(e) => {
-            const newS = [...sezioni]; newS[i].testo = e.target.value; setSezioni(newS);
-          }} style={{ ...inputStyle, height: s.tipo === 'radio' ? '40px' : '120px' }} 
-             placeholder={s.tipo === 'radio' ? "Inserisci URL HTTPS..." : "Testo"} />
+      <button onClick={() => setView('menu')} style={{marginBottom: '20px'}}>← Torna al Menu</button>
+      <h2>Stai modificando: {view.toUpperCase()}</h2>
+      
+      {view === 'bio' && (
+        <div style={{background: '#222', padding: '20px'}}>
+          <input value={data.bio.titolo} onChange={(e) => setData({...data, bio: {...data.bio, titolo: e.target.value}})} style={{width: '100%', padding: '10px', color: '#000'}} placeholder="Titolo" />
+          <textarea value={data.bio.testo} onChange={(e) => setData({...data, bio: {...data.bio, testo: e.target.value}})} style={{width: '100%', height: '200px', marginTop: '10px', padding: '10px', color: '#000'}} placeholder="Testo" />
         </div>
-      ))}
+      )}
       
-      <button onClick={() => setSezioni([...sezioni, { titolo: '', testo: '', tipo: 'testo' }])} style={{ padding: '10px' }}>
-        + Aggiungi nuova sezione
-      </button>
-      
-      <button onClick={handleUpdate} style={{ marginLeft: '10px', padding: '10px', background: '#ff0000', color: '#fff', border: 'none' }}>
-        SALVA TUTTO
-      </button>
+      {view === 'radio' && (
+        <div style={{background: '#222', padding: '20px'}}>
+          <label>URL Stream HTTPS:</label>
+          <input value={data.radio.url} onChange={(e) => setData({...data, radio: {url: e.target.value}})} style={{width: '100%', padding: '10px', marginTop: '10px', color: '#000'}} placeholder="https://..." />
+        </div>
+      )}
+
+      {view === 'calendario' && (
+        <div style={{background: '#222', padding: '20px'}}>
+          {data.calendario.map((item: any, i: number) => (
+             <input key={i} value={item} onChange={(e) => {
+               const n = [...data.calendario]; n[i] = e.target.value; setData({...data, calendario: n});
+             }} style={{width: '100%', padding: '10px', marginBottom: '10px', color: '#000'}} />
+          ))}
+          <button onClick={() => setData({...data, calendario: [...data.calendario, '']})}>+ Aggiungi evento</button>
+        </div>
+      )}
+
+      <button onClick={save} style={{ background: '#ff0000', color: 'white', marginTop: '20px', padding: '15px', width: '100%' }}>SALVA {view.toUpperCase()}</button>
     </main>
   );
 }
