@@ -1,34 +1,40 @@
 import Link from 'next/link';
-import Image from 'next/image';
 
 export default function Home() {
   return (
     <main style={{ 
       display: 'flex', flexDirection: 'column', alignItems: 'center', 
-      justifyContent: 'center', height: '100vh', background: '#111', color: '#fff' 
+      justifyContent: 'center', minHeight: '100vh', background: '#111', color: '#fff',
+      padding: '20px'
     }}>
       <h1 style={{ marginBottom: '40px' }}>Eddie Santillo</h1>
       
-      <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
+      <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }}>
         
-        {/* Pulsante Bio (Testuale per ora) */}
-        <Link href="/biografia" style={{ color: '#ff4444', fontSize: '20px', textDecoration: 'none' }}>
-          Biografia
+        {/* Pulsante Biografia */}
+        <Link href="/biografia">
+          <img 
+            src="/bio.jpeg" 
+            alt="Biografia" 
+            style={{ width: '150px', height: '150px', objectFit: 'cover', borderRadius: '10px', display: 'block' }} 
+          />
         </Link>
 
-        {/* Pulsante Appuntamenti (Testuale per ora) */}
-        <Link href="/appuntamenti" style={{ color: '#ff4444', fontSize: '20px', textDecoration: 'none' }}>
-          Appuntamenti
+        {/* Pulsante Appuntamenti */}
+        <Link href="/appuntamenti">
+          <img 
+            src="/appuntamenti.jpeg" 
+            alt="Appuntamenti" 
+            style={{ width: '150px', height: '150px', objectFit: 'cover', borderRadius: '10px', display: 'block' }} 
+          />
         </Link>
 
-        {/* Pulsante Radio con Immagine */}
+        {/* Pulsante Radio */}
         <Link href="/player">
-          <Image 
+          <img 
             src="/radio.jpeg" 
             alt="Radio" 
-            width={200} 
-            height={100} 
-            style={{ cursor: 'pointer', borderRadius: '10px' }} 
+            style={{ width: '150px', height: '150px', objectFit: 'cover', borderRadius: '10px', display: 'block' }} 
           />
         </Link>
 
