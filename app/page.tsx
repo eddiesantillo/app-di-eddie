@@ -9,6 +9,9 @@ export default function Home() {
     }}>
       <h1 style={{ marginBottom: '40px' }}>Eddie Santillo</h1>
       
+      {/* Aggiunto commento per forzare il riconoscimento delle modifiche da parte di Vercel */}
+      {/* Forza deploy */}
+
       <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }}>
         
         {/* Pulsante Biografia */}
