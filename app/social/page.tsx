@@ -6,7 +6,7 @@ export default function SocialPage() {
     { name: 'Instagram', url: 'https://www.instagram.com/eddiesantillo/' },
     { name: 'TikTok', url: 'https://www.tiktok.com/@eddiesantillo' },
     { name: 'YouTube', url: 'https://www.youtube.com/@EddieSantillo' },
-    { name: 'Spotify', url: 'https://open.spotify.com/artist/27iTkp69qsVK7nKMZq6Qi' }, // Link Spotify aggiornato/corretto
+    { name: 'Spotify', url: 'https://open.spotify.com/intl-it/artist/2tiTkp69g3sVk7nKMZq6Qi' },
   ];
 
   return (
@@ -26,7 +26,7 @@ export default function SocialPage() {
             rel="noopener noreferrer"
             style={{ 
               padding: '20px',
-              // Grafica Steampunk: Gradiente ottonato con trasparenza
+              // Grafica Steampunk: Gradiente ottonato
               background: 'linear-gradient(135deg, rgba(80,60,40,0.8) 0%, rgba(130,100,70,0.8) 100%)',
               color: '#fdf3e7', 
               textDecoration: 'none', 
@@ -34,9 +34,9 @@ export default function SocialPage() {
               fontSize: '1.4rem',
               fontWeight: 'bold',
               textAlign: 'center', 
-              // Bordo spesso e scuro (Rame/Ottone antico)
+              // Bordo rame antico
               border: '3px solid #5d432c',
-              // Ombre esterne e interne per profondità (effetto placca)
+              // Ombre per profondità
               boxShadow: '0 4px 10px rgba(0,0,0,0.5), inset 0 2px 5px rgba(255,255,255,0.1)',
               textTransform: 'uppercase',
               letterSpacing: '1px'
