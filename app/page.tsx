@@ -16,7 +16,7 @@ export default function Home() {
           <img 
             src="/bio.jpeg" 
             alt="Biografia" 
-            style={{ width: '150px', height: '150px', objectFit: 'cover', borderRadius: '10px', display: 'block' }} 
+            style={{ width: '150px', height: '150px', objectFit: 'contain', borderRadius: '10px', display: 'block' }} 
           />
         </Link>
 
@@ -25,7 +25,7 @@ export default function Home() {
           <img 
             src="/appuntamenti.jpeg" 
             alt="Appuntamenti" 
-            style={{ width: '150px', height: '150px', objectFit: 'cover', borderRadius: '10px', display: 'block' }} 
+            style={{ width: '150px', height: '150px', objectFit: 'contain', borderRadius: '10px', display: 'block' }} 
           />
         </Link>
 
@@ -34,7 +34,7 @@ export default function Home() {
           <img 
             src="/radio.jpeg" 
             alt="Radio" 
-            style={{ width: '150px', height: '150px', objectFit: 'cover', borderRadius: '10px', display: 'block' }} 
+            style={{ width: '150px', height: '150px', objectFit: 'contain', borderRadius: '10px', display: 'block' }} 
           />
         </Link>
 
