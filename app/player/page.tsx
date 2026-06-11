@@ -1,12 +1,13 @@
 'use client';
+
 import { useState, useRef } from 'react';
 import Link from 'next/link';
 
 export default function PlayerPage() {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
-
-  // Link corretto alla tua radio
+  
+  // Link del tuo stream radio
   const audioSource = "https://artemis.streamerr.co/listen/eddie_santillo/radio.mp3";
 
   const togglePlay = () => {
@@ -32,48 +33,42 @@ export default function PlayerPage() {
       padding: '20px'
     }}>
       
-      {/* Container per l'immagine */}
-      <div style={{ position: 'relative', width: '100%', maxWidth: '900px' }}>
-        
-        {/* L'immagine visibile */}
+      {/* Immagine cliccabile */}
+      <div 
+        onClick={togglePlay}
+        style={{
+          width: '100%',
+          maxWidth: '400px',
+          cursor: 'pointer',
+          transition: 'transform 0.2s',
+          transform: isPlaying ? 'scale(0.95)' : 'scale(1)',
+          display: 'flex',
+          justifyContent: 'center'
+        }}
+        title={isPlaying ? "Pausa" : "Play"}
+      >
         <img 
-          src="/radio-bg.png" 
-          alt="Radio Steampunk" 
+          src="/play-btn.png" 
+          alt="Play Radio" 
           style={{ width: '100%', height: 'auto', display: 'block' }} 
-        />
-
-        {/* PULSANTE PLAY INVISIBILE */}
-        <div 
-          onClick={togglePlay}
-          style={{
-            position: 'absolute',
-            top: '58%', 
-            left: '50%',
-            width: '15%',
-            height: '25%',
-            transform: 'translate(-50%, -50%)',
-            cursor: 'pointer',
-            zIndex: 20
-          }}
-          title={isPlaying ? "Pausa" : "Play"}
-        />
-
-        <audio 
-          ref={audioRef} 
-          src={audioSource} 
-          onEnded={() => setIsPlaying(false)}
         />
       </div>
 
+      {/* Audio element nascosto */}
+      <audio 
+        ref={audioRef} 
+        src={audioSource} 
+        onEnded={() => setIsPlaying(false)}
+      />
+
+      {/* Link di navigazione semplice */}
       <Link href="/" style={{ 
-        marginTop: '30px', 
+        marginTop: '50px', 
         color: '#dca355', 
         textDecoration: 'none', 
-        fontSize: '1.2rem',
-        border: '1px solid #dca355',
-        padding: '10px 20px'
+        fontSize: '1.2rem'
       }}>
-        ← ESCI DALL'OFFICINA
+        Indietro
       </Link>
     </main>
   );
