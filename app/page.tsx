@@ -9,36 +9,32 @@ export default function Home() {
     }}>
       <h1 style={{ marginBottom: '40px' }}>Eddie Santillo</h1>
       
-      {/* Aggiunto commento per forzare il riconoscimento delle modifiche da parte di Vercel */}
-      {/* Forza deploy */}
-
+      {/* Container principale con tutti i pulsanti */}
       <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }}>
         
         {/* Pulsante Biografia */}
         <Link href="/biografia">
-          <img 
-            src="/bio.jpeg" 
-            alt="Biografia" 
-            style={{ width: '150px', height: '150px', objectFit: 'contain', borderRadius: '10px', display: 'block' }} 
-          />
+          <img src="/bio.jpeg" alt="Biografia" style={{ width: '150px', height: '150px', objectFit: 'contain', borderRadius: '10px', display: 'block' }} />
         </Link>
 
         {/* Pulsante Appuntamenti */}
         <Link href="/appuntamenti">
-          <img 
-            src="/appuntamenti.jpeg" 
-            alt="Appuntamenti" 
-            style={{ width: '150px', height: '150px', objectFit: 'contain', borderRadius: '10px', display: 'block' }} 
-          />
+          <img src="/appuntamenti.jpeg" alt="Appuntamenti" style={{ width: '150px', height: '150px', objectFit: 'contain', borderRadius: '10px', display: 'block' }} />
         </Link>
 
         {/* Pulsante Radio */}
         <Link href="/player">
-          <img 
-            src="/radio.jpeg" 
-            alt="Radio" 
-            style={{ width: '150px', height: '150px', objectFit: 'contain', borderRadius: '10px', display: 'block' }} 
-          />
+          <img src="/radio.jpeg" alt="Radio" style={{ width: '150px', height: '150px', objectFit: 'contain', borderRadius: '10px', display: 'block' }} />
+        </Link>
+
+        {/* Pulsante Social */}
+        <Link href="/social">
+          <img src="/social.jpeg" alt="Social" style={{ width: '150px', height: '150px', objectFit: 'contain', borderRadius: '10px', display: 'block' }} />
+        </Link>
+
+        {/* Pulsante Music Shop */}
+        <Link href="/music-shop">
+          <img src="/music_shop.jpeg" alt="Music Shop" style={{ width: '150px', height: '150px', objectFit: 'contain', borderRadius: '10px', display: 'block' }} />
         </Link>
 
       </div>
