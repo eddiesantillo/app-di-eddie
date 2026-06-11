@@ -7,10 +7,9 @@ export default function Home() {
       justifyContent: 'center', minHeight: '100vh', background: '#111', color: '#fff',
       padding: '20px'
     }}>
-      <h1 style={{ marginBottom: '40px' }}>Eddie Santillo</h1>
       
-      {/* Container principale con tutti i pulsanti */}
-      <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }}>
+      {/* Container principale con tutti i pulsanti - Aggiunto marginTop per bilanciare lo spazio */}
+      <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', marginTop: '40px' }}>
         
         {/* Pulsante Biografia */}
         <Link href="/biografia">
