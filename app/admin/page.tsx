@@ -90,10 +90,11 @@ export default function AdminPage() {
         </div>
       )}
 
-      {/* Ritorna il tasto Salva */}
       <button onClick={save} style={{ display: 'block', marginTop: '40px', padding: '15px', background: 'red', color: 'white', width: '100%', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
         SALVA TUTTO
       </button>
+      
+      {/* //prova */}
     </main>
   );
 }
