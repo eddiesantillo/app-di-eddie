@@ -20,9 +20,8 @@ export default function Home() {
       padding: '20px', textAlign: 'center'
     }}>
       
-      {/* Testo in stile AC/DC, ridotto */}
       <p className={newRocker.className} style={{ 
-        fontSize: '1rem', 
+        fontSize: '1.1rem', 
         color: '#dca355', 
         marginBottom: '20px', 
         textTransform: 'uppercase',
@@ -35,20 +34,19 @@ export default function Home() {
         un viaggio live tra grandi classici e nuove storie.
       </p>
 
-      {/* Immagine */}
+      {/* Qui stiamo chiamando /eddy.png (minuscolo) */}
       <div style={{ marginBottom: '25px', width: '100%', maxWidth: '350px' }}>
         <img 
-          src="/eddie.jpeg" 
+          src="/eddy.png" 
           alt="Eddie Santillo" 
           style={{ 
             width: '100%', 
-            borderRadius: '12px', 
-            border: '2px solid #dca355' 
+            borderRadius: '12px',
+            display: 'block'
           }} 
         />
       </div>
 
-      {/* Griglia Icone */}
       <div style={{ 
         display: 'grid', 
         gridTemplateColumns: 'repeat(2, 1fr)', 
