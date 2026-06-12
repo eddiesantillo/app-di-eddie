@@ -17,15 +17,17 @@ export default function SocialPage() {
     fetchData();
   }, []);
 
-  // Aggiornato per corrispondere esattamente ai nomi nel tuo database
   const getIconPath = (nome: string) => {
-    switch(nome) {
-      case 'Facebook': return '/facebook.jpeg';
-      case 'Instagram': return '/instagram.jpeg';
-      case 'Youtube': return '/youtube.jpeg';
-      case 'TikTok': return '/tiktok.jpeg';
-      default: return '/social-btn.png';
-    }
+    const map: { [key: string]: string } = {
+      'Facebook': 'facebook',
+      'Instagram': 'instagram',
+      'Youtube': 'youtube',
+      'TikTok': 'tiktok',
+      'Spotify': 'spotify'
+    };
+    const baseName = map[nome] || 'social-btn';
+    // Aggiunto timestamp per forzare il ricaricamento ed evitare problemi di cache su mobile
+    return `/${baseName}.jpeg?v=${Date.now()}`;
   };
 
   return (
