@@ -20,7 +20,6 @@ export default function Home() {
       padding: '20px', textAlign: 'center'
     }}>
       
-      {/* Testo AC/DC ridotto ulteriormente */}
       <p className={newRocker.className} style={{ 
         fontSize: '0.9rem', 
         color: '#dca355', 
@@ -35,7 +34,6 @@ export default function Home() {
         un viaggio live tra grandi classici e nuove storie.
       </p>
 
-      {/* Foto rimpicciolita */}
       <div style={{ marginBottom: '20px', width: '100%', maxWidth: '300px' }}>
         <img 
           src="/eddy.png" 
@@ -48,7 +46,7 @@ export default function Home() {
         />
       </div>
 
-      {/* Griglia Icone */}
+      {/* Griglia Icone Aggiornata con FOTO */}
       <div style={{ 
         display: 'grid', 
         gridTemplateColumns: 'repeat(2, 1fr)', 
@@ -60,9 +58,10 @@ export default function Home() {
         <Link href="/appuntamenti"><img src="/appuntamenti.jpeg" alt="Appuntamenti" style={iconStyle} /></Link>
         <Link href="/player"><img src="/radio.jpeg" alt="Radio" style={iconStyle} /></Link>
         <Link href="/social"><img src="/social.jpeg" alt="Social" style={iconStyle} /></Link>
-        <Link href="/music-shop" style={{ gridColumn: 'span 2' }}>
-          <img src="/music_shop.jpeg" alt="Music Shop" style={{...iconStyle, maxWidth: '150px', margin: '0 auto'}} />
-        </Link>
+        
+        {/* Nuova sezione FOTO affiancata al Music Shop */}
+        <Link href="/foto"><img src="/foto.jpeg" alt="Foto" style={iconStyle} /></Link>
+        <Link href="/music-shop"><img src="/music_shop.jpeg" alt="Music Shop" style={iconStyle} /></Link>
       </div>
     </main>
   );
