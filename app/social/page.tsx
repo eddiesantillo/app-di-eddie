@@ -17,42 +17,52 @@ export default function SocialPage() {
     fetchData();
   }, []);
 
+  // Mappiamo i nomi che arrivano da Firebase alle tue immagini
+  const getIconPath = (nome: string) => {
+    switch(nome.toLowerCase()) {
+      case 'facebook': return '/facebook.jpeg';
+      case 'instagram': return '/instagram.jpeg';
+      case 'youtube': return '/youtube.jpeg';
+      case 'tiktok': return '/tiktok.jpeg';
+      default: return '/social-btn.png';
+    }
+  };
+
   return (
     <main style={{ 
       display: 'flex', flexDirection: 'column', alignItems: 'center', 
-      justifyContent: 'center', minHeight: '100vh', background: '#111', color: '#fff',
-      padding: '20px', fontFamily: 'sans-serif'
+      justifyContent: 'center', minHeight: '100vh', background: '#000', color: '#fff',
+      padding: '20px'
     }}>
-      <h1 style={{ marginBottom: '30px', fontSize: '2.5rem', textTransform: 'uppercase', letterSpacing: '2px', color: '#dca355' }}>Social</h1>
+      <h1 style={{ marginBottom: '30px', fontSize: '2rem', color: '#dca355' }}>SOCIAL</h1>
       
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', width: '100%', maxWidth: '450px' }}>
+      <div style={{ 
+        display: 'grid', 
+        gridTemplateColumns: 'repeat(2, 1fr)', 
+        gap: '15px', 
+        width: '100%', 
+        maxWidth: '400px' 
+      }}>
         {socialLinks.map((link, i) => (
           <a 
             key={i}
             href={link.url} 
             target="_blank" 
             rel="noopener noreferrer"
-            style={{ 
-              padding: '20px',
-              background: 'linear-gradient(135deg, rgba(80,60,40,0.8) 0%, rgba(130,100,70,0.8) 100%)',
-              color: '#fdf3e7', 
-              textDecoration: 'none', 
-              borderRadius: '12px', 
-              fontSize: '1.4rem',
-              fontWeight: 'bold',
-              textAlign: 'center', 
-              border: '3px solid #5d432c',
-              boxShadow: '0 4px 10px rgba(0,0,0,0.5), inset 0 2px 5px rgba(255,255,255,0.1)',
-              textTransform: 'uppercase',
-              letterSpacing: '1px'
-            }}
+            style={{ display: 'block' }}
           >
-            {link.nome}
+            <img 
+              src={getIconPath(link.nome)} 
+              alt={link.nome} 
+              style={{ width: '100%', borderRadius: '12px', display: 'block' }} 
+            />
           </a>
         ))}
-        
-        <Link href="/" style={{ marginTop: '40px', color: '#dca355', textAlign: 'center', fontSize: '1.1rem', textDecoration: 'none' }}>← Torna alla Home</Link>
       </div>
+      
+      <Link href="/" style={{ marginTop: '40px', color: '#dca355', fontSize: '1.1rem' }}>
+        ← Torna alla Home
+      </Link>
     </main>
   );
 }
