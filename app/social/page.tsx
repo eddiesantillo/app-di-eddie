@@ -26,8 +26,7 @@ export default function SocialPage() {
       'Spotify': 'spotify'
     };
     const baseName = map[nome] || 'social-btn';
-    // Aggiunto timestamp per forzare il ricaricamento ed evitare problemi di cache su mobile
-    return `/${baseName}.jpeg?v=${Date.now()}`;
+    return `/${baseName}.jpeg`;
   };
 
   return (
@@ -36,14 +35,15 @@ export default function SocialPage() {
       justifyContent: 'center', minHeight: '100vh', background: '#000', color: '#fff',
       padding: '20px'
     }}>
-      <h1 style={{ marginBottom: '30px', fontSize: '2rem', color: '#dca355' }}>SOCIAL</h1>
+      {/* Titolo "SOCIAL" rimosso come richiesto */}
       
       <div style={{ 
         display: 'grid', 
         gridTemplateColumns: 'repeat(2, 1fr)', 
-        gap: '15px', 
+        gap: '20px', 
         width: '100%', 
-        maxWidth: '400px' 
+        maxWidth: '400px',
+        marginTop: '20px'
       }}>
         {socialLinks.map((link, i) => (
           <a 
@@ -56,13 +56,13 @@ export default function SocialPage() {
             <img 
               src={getIconPath(link.nome)} 
               alt={link.nome} 
-              style={{ width: '100%', borderRadius: '12px', display: 'block' }} 
+              style={{ width: '100%', borderRadius: '12px', display: 'block', border: '1px solid #dca355' }} 
             />
           </a>
         ))}
       </div>
       
-      <Link href="/" style={{ marginTop: '40px', color: '#dca355', fontSize: '1.1rem' }}>
+      <Link href="/" style={{ marginTop: '40px', color: '#dca355', fontSize: '1.1rem', textDecoration: 'none' }}>
         ← Torna alla Home
       </Link>
     </main>
