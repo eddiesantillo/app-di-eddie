@@ -8,8 +8,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   const pathname = usePathname();
-  // Logica forzata: se siamo esattamente in '/' allora è Home.
+  
+  // Condizioni per nascondere l'header
   const isHome = pathname === '/';
+  const isSocialPage = pathname === '/social';
+  const showHeader = !isHome && !isSocialPage;
 
   return (
     <html lang="it">
@@ -19,8 +22,8 @@ export default function RootLayout({
       </head>
       <body style={{ backgroundColor: '#1a1a1a', color: '#ffffff', fontFamily: 'Arial, sans-serif', margin: 0, padding: 0 }}>
         
-        {/* Mostra header solo se NON è la home */}
-        {!isHome && (
+        {/* Mostra header solo se NON è la home E NON è la pagina social */}
+        {showHeader && (
           <header style={{ padding: '40px 20px', textAlign: 'center' }}>
             <img 
               src="/logo.png" 
