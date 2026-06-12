@@ -20,46 +20,48 @@ export default function Home() {
       padding: '20px', textAlign: 'center'
     }}>
       
+      {/* Testo AC/DC ridotto ulteriormente */}
       <p className={newRocker.className} style={{ 
-        fontSize: '1.1rem', 
+        fontSize: '0.9rem', 
         color: '#dca355', 
-        marginBottom: '20px', 
+        marginBottom: '15px', 
         textTransform: 'uppercase',
         letterSpacing: '0.5px',
         textShadow: '1px 1px 0px #000',
-        maxWidth: '400px',
-        lineHeight: '1.4'
+        maxWidth: '350px',
+        lineHeight: '1.3'
       }}>
         Dalle radici del blues alle vette dell'hard rock:<br/>
         un viaggio live tra grandi classici e nuove storie.
       </p>
 
-      {/* Qui stiamo chiamando /eddy.png (minuscolo) */}
-      <div style={{ marginBottom: '25px', width: '100%', maxWidth: '350px' }}>
+      {/* Foto rimpicciolita */}
+      <div style={{ marginBottom: '20px', width: '100%', maxWidth: '300px' }}>
         <img 
           src="/eddy.png" 
           alt="Eddie Santillo" 
           style={{ 
             width: '100%', 
-            borderRadius: '12px',
+            borderRadius: '10px',
             display: 'block'
           }} 
         />
       </div>
 
+      {/* Griglia Icone */}
       <div style={{ 
         display: 'grid', 
         gridTemplateColumns: 'repeat(2, 1fr)', 
-        gap: '12px', 
+        gap: '10px', 
         width: '100%', 
-        maxWidth: '350px' 
+        maxWidth: '300px' 
       }}>
         <Link href="/biografia"><img src="/bio.jpeg" alt="Biografia" style={iconStyle} /></Link>
         <Link href="/appuntamenti"><img src="/appuntamenti.jpeg" alt="Appuntamenti" style={iconStyle} /></Link>
         <Link href="/player"><img src="/radio.jpeg" alt="Radio" style={iconStyle} /></Link>
         <Link href="/social"><img src="/social.jpeg" alt="Social" style={iconStyle} /></Link>
         <Link href="/music-shop" style={{ gridColumn: 'span 2' }}>
-          <img src="/music_shop.jpeg" alt="Music Shop" style={{...iconStyle, maxWidth: '170px', margin: '0 auto'}} />
+          <img src="/music_shop.jpeg" alt="Music Shop" style={{...iconStyle, maxWidth: '150px', margin: '0 auto'}} />
         </Link>
       </div>
     </main>
