@@ -17,13 +17,13 @@ export default function SocialPage() {
     fetchData();
   }, []);
 
-  // Mappiamo i nomi che arrivano da Firebase alle tue immagini
+  // Aggiornato per corrispondere esattamente ai nomi nel tuo database
   const getIconPath = (nome: string) => {
-    switch(nome.toLowerCase()) {
-      case 'facebook': return '/facebook.jpeg';
-      case 'instagram': return '/instagram.jpeg';
-      case 'youtube': return '/youtube.jpeg';
-      case 'tiktok': return '/tiktok.jpeg';
+    switch(nome) {
+      case 'Facebook': return '/facebook.jpeg';
+      case 'Instagram': return '/instagram.jpeg';
+      case 'Youtube': return '/youtube.jpeg';
+      case 'TikTok': return '/tiktok.jpeg';
       default: return '/social-btn.png';
     }
   };
