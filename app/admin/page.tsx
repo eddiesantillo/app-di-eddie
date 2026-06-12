@@ -1,34 +1,23 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { db } from '../../lib/firebase';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, collection, getDocs, addDoc, deleteDoc } from 'firebase/firestore';
 
 export default function AdminPage() {
   const [view, setView] = useState<'menu' | 'bio' | 'radio' | 'calendario' | 'social' | 'shop' | 'foto'>('menu');
   const [data, setData] = useState<any>(null);
-  const [fotoData, setFotoData] = useState<string[]>([]);
+  const [fotoList, setFotoList] = useState<{id: string, src: string}[]>([]);
   const [loading, setLoading] = useState(true);
-
-  const inputStyle = { width: '100%', padding: '12px', marginTop: '8px', background: '#333', color: '#fff', border: '1px solid #555', borderRadius: '4px' };
 
   useEffect(() => {
     const fetchData = async () => {
+      // Dati principali
       const snap = await getDoc(doc(db, "content", "Eddie Santillo"));
-      if (snap.exists()) {
-        const d = snap.data();
-        setData({
-          bio: d.bio || [],
-          radio: d.radio || { url: '' },
-          calendario: d.calendario || [],
-          social: d.social || [],
-          shop: d.shop || []
-        });
-      } else {
-        setData({ bio: [], radio: { url: '' }, calendario: [], social: [], shop: [] });
-      }
+      setData(snap.exists() ? snap.data() : { bio: [], radio: { url: '' }, calendario: [], social: [], shop: [] });
       
-      const fotoSnap = await getDoc(doc(db, "content", "galleria"));
-      if (fotoSnap.exists()) setFotoData(fotoSnap.data().immagini || []);
+      // Dati foto (lettura da collezione separata)
+      const fotoSnap = await getDocs(collection(db, "foto"));
+      setFotoList(fotoSnap.docs.map(doc => ({ id: doc.id, src: doc.data().src })));
       
       setLoading(false);
     };
@@ -38,18 +27,26 @@ export default function AdminPage() {
   const save = async () => {
     try {
       await setDoc(doc(db, "content", "Eddie Santillo"), data);
-      await setDoc(doc(db, "content", "galleria"), { immagini: fotoData });
       alert("Salvato correttamente!");
     } catch (e) { alert("Errore nel salvataggio"); }
   };
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
-      reader.onloadend = () => setFotoData([...fotoData, reader.result as string]);
+      reader.onloadend = async () => {
+        const base64 = reader.result as string;
+        const newDoc = await addDoc(collection(db, "foto"), { src: base64 });
+        setFotoList([...fotoList, { id: newDoc.id, src: base64 }]);
+      };
       reader.readAsDataURL(file);
     }
+  };
+
+  const deleteFoto = async (id: string) => {
+    await deleteDoc(doc(db, "foto", id));
+    setFotoList(fotoList.filter(f => f.id !== id));
   };
 
   if (loading) return <div style={{color: '#fff', padding: '20px'}}>Caricamento...</div>;
@@ -59,10 +56,6 @@ export default function AdminPage() {
       <h1>Dashboard Amministrativa</h1>
       <div style={{ display: 'grid', gap: '20px', maxWidth: '300px', margin: 'auto' }}>
         <button onClick={() => setView('bio')} style={{padding: '15px', cursor: 'pointer'}}>Gestisci Bio</button>
-        <button onClick={() => setView('radio')} style={{padding: '15px', cursor: 'pointer'}}>Gestisci Radio</button>
-        <button onClick={() => setView('calendario')} style={{padding: '15px', cursor: 'pointer'}}>Gestisci Calendario</button>
-        <button onClick={() => setView('social')} style={{padding: '15px', cursor: 'pointer'}}>Gestisci Social</button>
-        <button onClick={() => setView('shop')} style={{padding: '15px', cursor: 'pointer'}}>Gestisci Music Shop</button>
         <button onClick={() => setView('foto')} style={{padding: '15px', cursor: 'pointer', background: '#dca355'}}>Gestisci Foto</button>
       </div>
     </main>
@@ -71,24 +64,22 @@ export default function AdminPage() {
   return (
     <main style={{ padding: '20px', background: '#111', color: '#fff', minHeight: '100vh' }}>
       <button onClick={() => setView('menu')} style={{marginBottom: '20px', padding: '10px', cursor: 'pointer'}}>← Torna al Menu</button>
-      <h2>Gestione {view.toUpperCase()}</h2>
+      <h2>Gestione FOTO</h2>
+      <hr style={{ border: '0', borderTop: '2px solid #333', margin: '20px 0' }} />
 
-      {view === 'foto' && (
-        <div style={{ textAlign: 'center', marginTop: '20px' }}>
-          <input type="file" accept="image/*" id="file-upload" onChange={handleFileUpload} style={{ display: 'none' }} />
-          <label htmlFor="file-upload" style={{ padding: '15px 30px', background: '#1a1a1a', color: '#dca355', border: '2px solid #dca355', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}>
-            + Carica Nuova Foto
-          </label>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: '15px', marginTop: '30px' }}>
-            {fotoData.map((src, i) => (
-              <div key={i} style={{ position: 'relative', border: '1px solid #444', borderRadius: '8px', overflow: 'hidden' }}>
-                <img src={src} style={{ width: '100%', height: '120px', objectFit: 'cover' }} />
-                <button onClick={() => setFotoData(fotoData.filter((_, idx) => idx !== i))} style={{ position: 'absolute', top: '5px', right: '5px', background: 'red', border: 'none', color: 'white', borderRadius: '50%', width: '25px', height: '25px', cursor: 'pointer' }}>X</button>
-              </div>
-            ))}
+      <input type="file" accept="image/*" id="file-upload" onChange={handleFileUpload} style={{ display: 'none' }} />
+      <label htmlFor="file-upload" style={{ padding: '15px 30px', background: '#1a1a1a', color: '#dca355', border: '2px solid #dca355', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}>
+        + Carica Nuova Foto
+      </label>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: '15px', marginTop: '30px' }}>
+        {fotoList.map((f) => (
+          <div key={f.id} style={{ position: 'relative', border: '1px solid #444', borderRadius: '8px', overflow: 'hidden' }}>
+            <img src={f.src} style={{ width: '100%', height: '120px', objectFit: 'cover' }} />
+            <button onClick={() => deleteFoto(f.id)} style={{ position: 'absolute', top: '5px', right: '5px', background: 'red', border: 'none', color: 'white', borderRadius: '50%', width: '25px', height: '25px', cursor: 'pointer' }}>X</button>
           </div>
-        </div>
-      )}
+        ))}
+      </div>
 
       <button onClick={save} style={{ display: 'block', marginTop: '40px', padding: '15px', background: 'red', color: 'white', width: '100%', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
         SALVA TUTTO
