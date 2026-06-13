@@ -20,63 +20,48 @@ export default function AdminPage() {
     fetchData();
   }, []);
 
-  const updateCalendario = (val: string, key: string, i: number) => {
-    const n = [...data.calendario];
-    n[i][key] = val;
-    setData({...data, calendario: n});
-  };
-
   const save = async () => {
-    await setDoc(doc(db, "content", "Eddie Santillo"), data);
-    alert("Salvato!");
+    try {
+      await setDoc(doc(db, "content", "Eddie Santillo"), data);
+      alert("Salvato!");
+    } catch (e) { alert("Errore"); }
   };
 
   if (loading) return <div>Caricamento...</div>;
 
+  // MENU PRINCIPALE
   if (view === 'menu') return (
-    <div style={{ background: '#000', color: '#fff', minHeight: '100vh', padding: '20px' }}>
-      <h1>Dashboard</h1>
-      <button onClick={() => setView('calendario')}>GESTISCI CALENDARIO</button>
-      <button onClick={() => setView('bio')}>GESTISCI BIO</button>
+    <div style={{ padding: '20px', textAlign: 'center' }}>
+      <h1>Dashboard Amministrativa</h1>
+      <button style={{display: 'block', width: '100%', padding: '20px', margin: '10px 0'}} onClick={() => setView('bio')}>Gestisci Bio</button>
+      <button style={{display: 'block', width: '100%', padding: '20px', margin: '10px 0'}} onClick={() => setView('radio')}>Gestisci Radio</button>
+      <button style={{display: 'block', width: '100%', padding: '20px', margin: '10px 0'}} onClick={() => setView('calendario')}>Gestisci Calendario</button>
+      <button style={{display: 'block', width: '100%', padding: '20px', margin: '10px 0'}} onClick={() => setView('social')}>Gestisci Social</button>
+      <button style={{display: 'block', width: '100%', padding: '20px', margin: '10px 0'}} onClick={() => setView('shop')}>Gestisci Shop</button>
+      <button style={{display: 'block', width: '100%', padding: '20px', margin: '10px 0'}} onClick={() => setView('foto')}>Gestisci Foto</button>
     </div>
   );
 
+  // VISTA CALENDARIO
   return (
-    <div style={{ background: '#000', color: '#fff', minHeight: '100vh', padding: '20px' }}>
-      <button onClick={() => setView('menu')}>TORNA AL MENU</button>
-      
-      {view === 'calendario' && (
-        <div style={{ marginTop: '20px' }}>
-          {(data.calendario || []).map((c: any, i: number) => (
-            <div key={i} style={{ border: '1px solid #fff', padding: '10px', marginBottom: '10px' }}>
-              <input 
-                value={c.title || ''} 
-                onChange={(e) => updateCalendario(e.target.value, 'title', i)} 
-                placeholder="Titolo" 
-                style={{ width: '100%', padding: '10px', color: '#000' }} 
-              />
-              <input 
-                type="date" 
-                value={c.start || ''} 
-                onChange={(e) => updateCalendario(e.target.value, 'start', i)} 
-                style={{ width: '100%', padding: '10px', color: '#000' }} 
-              />
-              <input 
-                value={c.location || ''} 
-                onChange={(e) => updateCalendario(e.target.value, 'location', i)} 
-                placeholder="Luogo" 
-                style={{ width: '100%', padding: '10px', color: '#000' }} 
-              />
-              <button onClick={() => {
-                const n = data.calendario.filter((_:any, idx:number) => idx !== i);
-                setData({...data, calendario: n});
-              }}>ELIMINA</button>
-            </div>
-          ))}
-          <button onClick={() => setData({...data, calendario: [...(data.calendario || []), {title: '', start: '', location: ''}]})}>+ AGGIUNGI</button>
-          <button onClick={save}>SALVA TUTTO</button>
+    <div style={{ padding: '20px' }}>
+      <button onClick={() => setView('menu')}>← TORNA AL MENU</button>
+      <h2>Gestione Calendario</h2>
+      {(data.calendario || []).map((c: any, i: number) => (
+        <div key={i} style={{ border: '1px solid #ccc', padding: '15px', marginBottom: '10px' }}>
+          <input value={c.title || ''} onChange={(e) => { const n = [...data.calendario]; n[i].title = e.target.value; setData({...data, calendario: n}); }} placeholder="Titolo" style={{display: 'block', width: '100%', padding: '10px'}} />
+          <input type="date" value={c.start || ''} onChange={(e) => { const n = [...data.calendario]; n[i].start = e.target.value; setData({...data, calendario: n}); }} style={{display: 'block', width: '100%', padding: '10px'}} />
+          <input value={c.location || ''} onChange={(e) => { const n = [...data.calendario]; n[i].location = e.target.value; setData({...data, calendario: n}); }} placeholder="Luogo" style={{display: 'block', width: '100%', padding: '10px'}} />
+          <select value={c.tipo || 'RL'} onChange={(e) => { const n = [...data.calendario]; n[i].tipo = e.target.value; setData({...data, calendario: n}); }} style={{display: 'block', width: '100%', padding: '10px'}}>
+            <option value="RL">RL</option>
+            <option value="SL">SL</option>
+          </select>
+          <input value={c.link || ''} onChange={(e) => { const n = [...data.calendario]; n[i].link = e.target.value; setData({...data, calendario: n}); }} placeholder="Link" style={{display: 'block', width: '100%', padding: '10px'}} />
+          <button onClick={() => setData({...data, calendario: data.calendario.filter((_:any, idx:number) => idx !== i)})}>ELIMINA</button>
         </div>
-      )}
+      ))}
+      <button style={{width: '100%', padding: '20px', background: 'green', color: '#fff'}} onClick={() => setData({...data, calendario: [...(data.calendario || []), {title: '', start: '', location: '', tipo: 'RL', link: ''}]})}>+ AGGIUNGI CONCERTO</button>
+      <button style={{width: '100%', padding: '20px', background: 'blue', color: '#fff', marginTop: '20px'}} onClick={save}>SALVA TUTTO</button>
     </div>
   );
 }
