@@ -6,22 +6,23 @@ export default function InstallBanner() {
   const [isIOS, setIsIOS] = useState(false);
 
   useEffect(() => {
-    // Rileva se il dispositivo è iOS
+    // Rileva iOS
     const ios = /iPad|iPhone|iPod/.test(navigator.userAgent);
     setIsIOS(ios);
 
-    // Controlla se l'app è già installata o se l'utente ha già chiuso il banner
+    // Controlla se è standalone
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
-    const dismissed = localStorage.getItem('pwa-dismissed');
+    
+    console.log("InstallBanner: caricato. IsStandalone:", isStandalone);
 
-    if (!isStandalone && !dismissed) {
+    // Se non è standalone, mostriamo il banner
+    if (!isStandalone) {
       setShowBanner(true);
     }
   }, []);
 
   const dismiss = () => {
     setShowBanner(false);
-    localStorage.setItem('pwa-dismissed', 'true');
   };
 
   if (!showBanner) return null;
@@ -29,15 +30,9 @@ export default function InstallBanner() {
   return (
     <div style={{
       position: 'fixed', bottom: '20px', left: '10px', right: '10px',
-      background: '#000', 
-      color: '#fff', 
-      padding: '15px', 
-      borderRadius: '12px',
-      border: '2px solid #dca355', 
-      zIndex: 9999, 
-      textAlign: 'center',
-      boxShadow: '0 4px 15px rgba(0,0,0,0.5)',
-      fontFamily: 'Arial, sans-serif'
+      background: '#000', color: '#fff', padding: '15px', borderRadius: '12px',
+      border: '2px solid #dca355', zIndex: 9999, textAlign: 'center',
+      boxShadow: '0 4px 15px rgba(0,0,0,0.5)', fontFamily: 'Arial, sans-serif'
     }}>
       <button onClick={dismiss} style={{
         float: 'right', background: 'none', border: 'none', 
