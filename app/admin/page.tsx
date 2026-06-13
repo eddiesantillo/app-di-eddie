@@ -26,8 +26,15 @@ export default function AdminPage() {
 
   const save = async () => {
     try {
-      await setDoc(doc(db, "content", "Eddie Santillo"), data);
-      alert("Salvato correttamente!");
+      const oggi = new Date();
+      oggi.setHours(0, 0, 0, 0);
+      const datiPuliti = {
+        ...data,
+        calendario: data.calendario.filter((c: any) => new Date(c.start) >= oggi)
+      };
+      await setDoc(doc(db, "content", "Eddie Santillo"), datiPuliti);
+      setData(datiPuliti);
+      alert("Salvato correttamente! (Eventi passati eliminati)");
     } catch (e) { alert("Errore nel salvataggio"); }
   };
 
@@ -102,25 +109,11 @@ export default function AdminPage() {
         </div>
       )}
 
-      {view === 'radio' && (
-        <input value={data.radio?.url || ''} onChange={(e) => setData({...data, radio: {url: e.target.value}})} style={inputStyle} placeholder="URL Stream" />
-      )}
+      {view === 'radio' && <input value={data.radio?.url || ''} onChange={(e) => setData({...data, radio: {url: e.target.value}})} style={inputStyle} placeholder="URL Stream" />}
 
-      {view === 'social' && (
-        <div>
-           {data.social?.map((s: any, i: number) => (
-             <input key={i} value={s.url || ''} onChange={(e) => { const n = [...data.social]; n[i].url = e.target.value; setData({...data, social: n}); }} style={inputStyle} placeholder="Social URL" />
-           ))}
-        </div>
-      )}
+      {view === 'social' && data.social?.map((s: any, i: number) => <input key={i} value={s.url || ''} onChange={(e) => { const n = [...data.social]; n[i].url = e.target.value; setData({...data, social: n}); }} style={inputStyle} placeholder="Social URL" />)}
 
-      {view === 'shop' && (
-        <div>
-           {data.shop?.map((s: any, i: number) => (
-             <input key={i} value={s.url || ''} onChange={(e) => { const n = [...data.shop]; n[i].url = e.target.value; setData({...data, shop: n}); }} style={inputStyle} placeholder="Shop URL" />
-           ))}
-        </div>
-      )}
+      {view === 'shop' && data.shop?.map((s: any, i: number) => <input key={i} value={s.url || ''} onChange={(e) => { const n = [...data.shop]; n[i].url = e.target.value; setData({...data, shop: n}); }} style={inputStyle} placeholder="Shop URL" />)}
 
       {view === 'foto' && (
         <div>

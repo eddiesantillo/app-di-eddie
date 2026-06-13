@@ -10,8 +10,13 @@ export default function Appuntamenti() {
     const fetchConcerti = async () => {
       const snap = await getDoc(doc(db, "content", "Eddie Santillo"));
       if (snap.exists()) {
+        const oggi = new Date();
+        oggi.setHours(0, 0, 0, 0); // Azzera l'ora per confronto preciso
+
         const c = snap.data().calendario || [];
-        setConcerti(c.sort((a: any, b: any) => new Date(a.start).getTime() - new Date(b.start).getTime()));
+        // Filtriamo: teniamo solo eventi >= oggi e ordiniamo
+        const futuri = c.filter((evento: any) => new Date(evento.start) >= oggi);
+        setConcerti(futuri.sort((a: any, b: any) => new Date(a.start).getTime() - new Date(b.start).getTime()));
       }
     };
     fetchConcerti();
@@ -24,7 +29,6 @@ export default function Appuntamenti() {
     <div style={{ padding: '20px', color: '#fff', maxWidth: '600px', margin: '0 auto' }}>
       <h2 style={{ textAlign: 'center', color: '#dca355', textTransform: 'uppercase', marginBottom: '40px' }}>Prossimi Live</h2>
       
-      {/* Sezione ON STAGE (RL) */}
       <h3 style={{ color: '#dca355', marginTop: '30px', borderBottom: '1px solid #444', textAlign: 'center' }}>ON STAGE (RL)</h3>
       {eventiRL.length === 0 ? <p style={{opacity: 0.5, textAlign: 'center'}}>Nessun evento in programma.</p> : 
         eventiRL.map((c: any, index) => (
@@ -37,7 +41,6 @@ export default function Appuntamenti() {
         ))
       }
 
-      {/* Sezione SECOND LIFE (SL) */}
       <h3 style={{ color: '#66ccff', marginTop: '30px', borderBottom: '1px solid #444', textAlign: 'center' }}>SECOND LIFE (SL)</h3>
       {eventiSL.length === 0 ? <p style={{opacity: 0.5, textAlign: 'center'}}>Nessun evento in programma.</p> : 
         eventiSL.map((c: any, index) => (
