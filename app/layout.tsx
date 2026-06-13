@@ -1,7 +1,6 @@
 'use client';
 import './globals.css';
 import { usePathname } from 'next/navigation';
-import InstallBanner from './components/InstallBanner'; // 1. AGGIUNGI QUESTO IMPORT
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -17,8 +16,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="theme-color" content="#1a1a1a" />
       </head>
       <body style={{ backgroundColor: '#1a1a1a', color: '#ffffff', fontFamily: 'Arial, sans-serif', margin: 0, padding: 0 }}>
-        
-        <InstallBanner /> {/* 2. AGGIUNGI QUESTO QUI */}
         
         {showHeader && (
           <header style={{ padding: '40px 20px', textAlign: 'center' }}>
