@@ -6,9 +6,11 @@ export default function InstallBanner() {
   const [isIOS, setIsIOS] = useState(false);
 
   useEffect(() => {
+    // Rileva se il dispositivo è iOS
     const ios = /iPad|iPhone|iPod/.test(navigator.userAgent);
     setIsIOS(ios);
 
+    // Controlla se l'app è già installata o se l'utente ha già chiuso il banner
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
     const dismissed = localStorage.getItem('pwa-dismissed');
 
@@ -27,15 +29,15 @@ export default function InstallBanner() {
   return (
     <div style={{
       position: 'fixed', bottom: '20px', left: '10px', right: '10px',
-      background: '#000', // Sfondo nero come il resto del sito
+      background: '#000', 
       color: '#fff', 
       padding: '15px', 
       borderRadius: '12px',
-      border: '2px solid #dca355', // Bordo ocra tipico del tuo sito
+      border: '2px solid #dca355', 
       zIndex: 9999, 
       textAlign: 'center',
       boxShadow: '0 4px 15px rgba(0,0,0,0.5)',
-      fontFamily: 'inherit'
+      fontFamily: 'Arial, sans-serif'
     }}>
       <button onClick={dismiss} style={{
         float: 'right', background: 'none', border: 'none', 
@@ -47,9 +49,13 @@ export default function InstallBanner() {
       </p>
       
       {isIOS ? (
-        <p style={{ margin: '0', fontSize: '0.9rem' }}>Tocca il tasto <b>Condividi</b> e seleziona <b>"Aggiungi alla schermata Home"</b>.</p>
+        <p style={{ margin: '0', fontSize: '0.9rem' }}>
+          Tocca il tasto <b>Condividi</b> e seleziona <b>"Aggiungi alla schermata Home"</b>.
+        </p>
       ) : (
-        <p style={{ margin: '0', fontSize: '0.9rem' }}>Tocca il menu del browser e seleziona <b>"Installa app"</b>.</p>
+        <p style={{ margin: '0', fontSize: '0.9rem' }}>
+          Tocca il menu del browser (⋮) e seleziona <b>"Aggiungi a schermata Home"</b>.
+        </p>
       )}
     </div>
   );
