@@ -1,13 +1,20 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../../lib/firebase';
 
 export default function Appuntamenti() {
   const [concerti, setConcerti] = useState([]);
 
   useEffect(() => {
-    fetch('/api/concerti')
-      .then(res => res.json())
-      .then(data => setConcerti(data));
+    const fetchConcerti = async () => {
+      const snap = await getDoc(doc(db, "content", "Eddie Santillo"));
+      if (snap.exists()) {
+        const c = snap.data().calendario || [];
+        setConcerti(c.sort((a: any, b: any) => new Date(a.start).getTime() - new Date(b.start).getTime()));
+      }
+    };
+    fetchConcerti();
   }, []);
 
   return (
@@ -17,15 +24,10 @@ export default function Appuntamenti() {
         <p style={{ textAlign: 'center', marginTop: '40px' }}>Nessun concerto in programma al momento.</p>
       ) : (
         concerti.map((c: any, index) => (
-          <div key={index} style={{
-            background: '#1a1a1a', padding: '15px', margin: '15px 0',
-            border: '1px solid #dca355', borderRadius: '8px'
-          }}>
-            <h3 style={{ margin: '0 0 5px 0', color: '#fff' }}>{c.title}</h3>
-            <p style={{ margin: '0', fontSize: '0.9rem', opacity: 0.8 }}>
-              Data: {new Date(c.start).toLocaleDateString('it-IT', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-            </p>
-            {c.location && <p style={{ margin: '0', fontSize: '0.8rem', opacity: 0.6 }}>Luogo: {c.location}</p>}
+          <div key={index} style={{ background: '#1a1a1a', padding: '15px', margin: '15px 0', border: '1px solid #dca355', borderRadius: '8px' }}>
+            <h3 style={{ margin: '0 0 5px 0' }}>{c.title}</h3>
+            <p style={{ margin: '0', fontSize: '0.9rem' }}>Data: {new Date(c.start).toLocaleDateString('it-IT')}</p>
+            <p style={{ margin: '0', fontSize: '0.8rem', opacity: 0.7 }}>Luogo: {c.location}</p>
           </div>
         ))
       )}

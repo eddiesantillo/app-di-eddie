@@ -83,6 +83,20 @@ export default function AdminPage() {
         </div>
       )}
 
+      {view === 'calendario' && (
+        <div>
+          {(data.calendario || []).map((c: any, i: number) => (
+            <div key={i} style={{marginBottom: '20px', border: '1px solid #555', padding: '15px', background: '#222', borderRadius: '8px'}}>
+              <input value={c.title || ''} onChange={(e) => { const n = [...data.calendario]; n[i].title = e.target.value; setData({...data, calendario: n}); }} style={inputStyle} placeholder="Nome Concerto" />
+              <input type="date" value={c.start || ''} onChange={(e) => { const n = [...data.calendario]; n[i].start = e.target.value; setData({...data, calendario: n}); }} style={inputStyle} />
+              <input value={c.location || ''} onChange={(e) => { const n = [...data.calendario]; n[i].location = e.target.value; setData({...data, calendario: n}); }} style={inputStyle} placeholder="Luogo" />
+              <button onClick={() => setData({...data, calendario: data.calendario.filter((_:any, idx:number) => idx !== i)})} style={{marginTop: '10px', background: '#700', color: '#fff', padding: '8px', cursor: 'pointer'}}>Elimina</button>
+            </div>
+          ))}
+          <button onClick={() => setData({...data, calendario: [...(data.calendario || []), {title: '', start: '', location: ''}]})}>+ Aggiungi Concerto</button>
+        </div>
+      )}
+
       {view === 'radio' && (
         <input value={data.radio?.url || ''} onChange={(e) => setData({...data, radio: {url: e.target.value}})} style={inputStyle} placeholder="URL Stream" />
       )}
@@ -103,7 +117,6 @@ export default function AdminPage() {
       )}
 
       <button onClick={save} style={{ display: 'block', marginTop: '40px', padding: '15px', background: 'red', color: 'white', width: '100%' }}>SALVA TUTTO</button>
-      {/* //prova */}
     </main>
   );
 }
