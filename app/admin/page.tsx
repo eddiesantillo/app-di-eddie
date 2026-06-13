@@ -9,13 +9,13 @@ export default function AdminPage() {
   const [fotoList, setFotoList] = useState<{id: string, src: string}[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const inputStyle = { width: '100%', padding: '12px', marginTop: '8px', background: '#333', color: '#fff', border: '1px solid #555', borderRadius: '4px' };
+
   useEffect(() => {
     const fetchData = async () => {
-      // Dati principali
       const snap = await getDoc(doc(db, "content", "Eddie Santillo"));
       setData(snap.exists() ? snap.data() : { bio: [], radio: { url: '' }, calendario: [], social: [], shop: [] });
       
-      // Dati foto (lettura da collezione separata)
       const fotoSnap = await getDocs(collection(db, "foto"));
       setFotoList(fotoSnap.docs.map(doc => ({ id: doc.id, src: doc.data().src })));
       
@@ -56,6 +56,10 @@ export default function AdminPage() {
       <h1>Dashboard Amministrativa</h1>
       <div style={{ display: 'grid', gap: '20px', maxWidth: '300px', margin: 'auto' }}>
         <button onClick={() => setView('bio')} style={{padding: '15px', cursor: 'pointer'}}>Gestisci Bio</button>
+        <button onClick={() => setView('radio')} style={{padding: '15px', cursor: 'pointer'}}>Gestisci Radio</button>
+        <button onClick={() => setView('calendario')} style={{padding: '15px', cursor: 'pointer'}}>Gestisci Calendario</button>
+        <button onClick={() => setView('social')} style={{padding: '15px', cursor: 'pointer'}}>Gestisci Social</button>
+        <button onClick={() => setView('shop')} style={{padding: '15px', cursor: 'pointer'}}>Gestisci Music Shop</button>
         <button onClick={() => setView('foto')} style={{padding: '15px', cursor: 'pointer', background: '#dca355'}}>Gestisci Foto</button>
       </div>
     </main>
@@ -64,27 +68,41 @@ export default function AdminPage() {
   return (
     <main style={{ padding: '20px', background: '#111', color: '#fff', minHeight: '100vh' }}>
       <button onClick={() => setView('menu')} style={{marginBottom: '20px', padding: '10px', cursor: 'pointer'}}>← Torna al Menu</button>
-      <h2>Gestione FOTO</h2>
-      <hr style={{ border: '0', borderTop: '2px solid #333', margin: '20px 0' }} />
+      <h2>Gestione {view.toUpperCase()}</h2>
 
-      <input type="file" accept="image/*" id="file-upload" onChange={handleFileUpload} style={{ display: 'none' }} />
-      <label htmlFor="file-upload" style={{ padding: '15px 30px', background: '#1a1a1a', color: '#dca355', border: '2px solid #dca355', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}>
-        + Carica Nuova Foto
-      </label>
+      {view === 'bio' && (
+        <div>
+          {data.bio.map((s: any, i: number) => (
+            <div key={i} style={{marginBottom: '20px', border: '1px solid #555', padding: '15px', background: '#222', borderRadius: '8px'}}>
+              <input value={s.titolo || ''} onChange={(e) => { const n = [...data.bio]; n[i].titolo = e.target.value; setData({...data, bio: n}); }} style={inputStyle} placeholder="Titolo" />
+              <textarea value={s.testo || ''} onChange={(e) => { const n = [...data.bio]; n[i].testo = e.target.value; setData({...data, bio: n}); }} style={{...inputStyle, height: '100px'}} />
+              <button onClick={() => setData({...data, bio: data.bio.filter((_:any, idx:number) => idx !== i)})} style={{marginTop: '10px', background: '#700', color: '#fff', padding: '8px', cursor: 'pointer'}}>Elimina</button>
+            </div>
+          ))}
+          <button onClick={() => setData({...data, bio: [...data.bio, {titolo: '', testo: ''}]})}>+ Aggiungi</button>
+        </div>
+      )}
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: '15px', marginTop: '30px' }}>
-        {fotoList.map((f) => (
-          <div key={f.id} style={{ position: 'relative', border: '1px solid #444', borderRadius: '8px', overflow: 'hidden' }}>
-            <img src={f.src} style={{ width: '100%', height: '120px', objectFit: 'cover' }} />
-            <button onClick={() => deleteFoto(f.id)} style={{ position: 'absolute', top: '5px', right: '5px', background: 'red', border: 'none', color: 'white', borderRadius: '50%', width: '25px', height: '25px', cursor: 'pointer' }}>X</button>
+      {view === 'radio' && (
+        <input value={data.radio?.url || ''} onChange={(e) => setData({...data, radio: {url: e.target.value}})} style={inputStyle} placeholder="URL Stream" />
+      )}
+
+      {view === 'foto' && (
+        <div>
+          <input type="file" accept="image/*" id="file-upload" onChange={handleFileUpload} style={{ display: 'none' }} />
+          <label htmlFor="file-upload" style={{ padding: '15px 30px', background: '#1a1a1a', color: '#dca355', border: '2px solid #dca355', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}>+ Carica Nuova Foto</label>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: '15px', marginTop: '30px' }}>
+            {fotoList.map((f) => (
+              <div key={f.id} style={{ position: 'relative' }}>
+                <img src={f.src} style={{ width: '100%', height: '120px', objectFit: 'cover' }} />
+                <button onClick={() => deleteFoto(f.id)} style={{ position: 'absolute', top: 0, right: 0, background: 'red' }}>X</button>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </div>
+      )}
 
-      <button onClick={save} style={{ display: 'block', marginTop: '40px', padding: '15px', background: 'red', color: 'white', width: '100%', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
-        SALVA TUTTO
-      </button>
-      
+      <button onClick={save} style={{ display: 'block', marginTop: '40px', padding: '15px', background: 'red', color: 'white', width: '100%' }}>SALVA TUTTO</button>
       {/* //prova */}
     </main>
   );
