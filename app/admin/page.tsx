@@ -22,46 +22,48 @@ export default function AdminPage() {
 
   const save = async () => {
     try {
-      await setDoc(doc(db, "content", "Eddie Santillo"), data);
-      alert("Salvato!");
-    } catch (e) { alert("Errore"); }
+      const oggi = new Date(); oggi.setHours(0,0,0,0);
+      const datiPuliti = { ...data, calendario: (data.calendario || []).filter((c: any) => new Date(c.start) >= oggi) };
+      await setDoc(doc(db, "content", "Eddie Santillo"), datiPuliti);
+      alert("Salvato correttamente!");
+    } catch (e) { alert("Errore nel salvataggio"); }
   };
 
   if (loading) return <div>Caricamento...</div>;
 
   // MENU PRINCIPALE
   if (view === 'menu') return (
-    <div style={{ padding: '20px', textAlign: 'center' }}>
+    <div style={{ padding: '20px' }}>
       <h1>Dashboard Amministrativa</h1>
-      <button style={{display: 'block', width: '100%', padding: '20px', margin: '10px 0'}} onClick={() => setView('bio')}>Gestisci Bio</button>
-      <button style={{display: 'block', width: '100%', padding: '20px', margin: '10px 0'}} onClick={() => setView('radio')}>Gestisci Radio</button>
-      <button style={{display: 'block', width: '100%', padding: '20px', margin: '10px 0'}} onClick={() => setView('calendario')}>Gestisci Calendario</button>
-      <button style={{display: 'block', width: '100%', padding: '20px', margin: '10px 0'}} onClick={() => setView('social')}>Gestisci Social</button>
-      <button style={{display: 'block', width: '100%', padding: '20px', margin: '10px 0'}} onClick={() => setView('shop')}>Gestisci Shop</button>
-      <button style={{display: 'block', width: '100%', padding: '20px', margin: '10px 0'}} onClick={() => setView('foto')}>Gestisci Foto</button>
+      <button onClick={() => setView('bio')}>Gestisci Bio</button>
+      <button onClick={() => setView('radio')}>Gestisci Radio</button>
+      <button onClick={() => setView('calendario')}>Gestisci Calendario</button>
+      <button onClick={() => setView('social')}>Gestisci Social</button>
+      <button onClick={() => setView('shop')}>Gestisci Shop</button>
+      <button onClick={() => setView('foto')}>Gestisci Foto</button>
     </div>
   );
 
-  // VISTA CALENDARIO
+  // GESTIONE CALENDARIO
   return (
     <div style={{ padding: '20px' }}>
       <button onClick={() => setView('menu')}>← TORNA AL MENU</button>
       <h2>Gestione Calendario</h2>
       {(data.calendario || []).map((c: any, i: number) => (
-        <div key={i} style={{ border: '1px solid #ccc', padding: '15px', marginBottom: '10px' }}>
-          <input value={c.title || ''} onChange={(e) => { const n = [...data.calendario]; n[i].title = e.target.value; setData({...data, calendario: n}); }} placeholder="Titolo" style={{display: 'block', width: '100%', padding: '10px'}} />
-          <input type="date" value={c.start || ''} onChange={(e) => { const n = [...data.calendario]; n[i].start = e.target.value; setData({...data, calendario: n}); }} style={{display: 'block', width: '100%', padding: '10px'}} />
-          <input value={c.location || ''} onChange={(e) => { const n = [...data.calendario]; n[i].location = e.target.value; setData({...data, calendario: n}); }} placeholder="Luogo" style={{display: 'block', width: '100%', padding: '10px'}} />
-          <select value={c.tipo || 'RL'} onChange={(e) => { const n = [...data.calendario]; n[i].tipo = e.target.value; setData({...data, calendario: n}); }} style={{display: 'block', width: '100%', padding: '10px'}}>
+        <div key={i} style={{ border: '1px solid #000', padding: '10px', marginBottom: '10px' }}>
+          <input value={c.title || ''} onChange={(e) => { const n = [...data.calendario]; n[i].title = e.target.value; setData({...data, calendario: n}); }} placeholder="Titolo" />
+          <input type="date" value={c.start || ''} onChange={(e) => { const n = [...data.calendario]; n[i].start = e.target.value; setData({...data, calendario: n}); }} />
+          <input value={c.location || ''} onChange={(e) => { const n = [...data.calendario]; n[i].location = e.target.value; setData({...data, calendario: n}); }} placeholder="Luogo" />
+          <select value={c.tipo || 'RL'} onChange={(e) => { const n = [...data.calendario]; n[i].tipo = e.target.value; setData({...data, calendario: n}); }}>
             <option value="RL">RL</option>
             <option value="SL">SL</option>
           </select>
-          <input value={c.link || ''} onChange={(e) => { const n = [...data.calendario]; n[i].link = e.target.value; setData({...data, calendario: n}); }} placeholder="Link" style={{display: 'block', width: '100%', padding: '10px'}} />
+          <input value={c.link || ''} onChange={(e) => { const n = [...data.calendario]; n[i].link = e.target.value; setData({...data, calendario: n}); }} placeholder="Link" />
           <button onClick={() => setData({...data, calendario: data.calendario.filter((_:any, idx:number) => idx !== i)})}>ELIMINA</button>
         </div>
       ))}
-      <button style={{width: '100%', padding: '20px', background: 'green', color: '#fff'}} onClick={() => setData({...data, calendario: [...(data.calendario || []), {title: '', start: '', location: '', tipo: 'RL', link: ''}]})}>+ AGGIUNGI CONCERTO</button>
-      <button style={{width: '100%', padding: '20px', background: 'blue', color: '#fff', marginTop: '20px'}} onClick={save}>SALVA TUTTO</button>
+      <button onClick={() => setData({...data, calendario: [...(data.calendario || []), {title: '', start: '', location: '', tipo: 'RL', link: ''}]})}>+ AGGIUNGI CONCERTO</button>
+      <button onClick={save}>SALVA TUTTO</button>
     </div>
   );
 }
