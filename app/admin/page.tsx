@@ -13,11 +13,26 @@ export default function AdminPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const snap = await getDoc(doc(db, "content", "Eddie Santillo"));
-      setData(snap.exists() ? snap.data() : { bio: [], radio: { url: '' }, calendario: [], social: [], shop: [] });
-      const fotoSnap = await getDocs(collection(db, "foto"));
-      setFotoList(fotoSnap.docs.map(doc => ({ id: doc.id, src: doc.data().src })));
-      setLoading(false);
+      try {
+        const snap = await getDoc(doc(db, "content", "Eddie Santillo"));
+        const dbData = snap.exists() ? snap.data() : {};
+        
+        // Pulizia e normalizzazione dati per evitare blocchi
+        setData({
+          bio: Array.isArray(dbData.bio) ? dbData.bio : [],
+          radio: dbData.radio || { url: '' },
+          calendario: Array.isArray(dbData.calendario) ? dbData.calendario : [],
+          social: Array.isArray(dbData.social) ? dbData.social : [],
+          shop: Array.isArray(dbData.shop) ? dbData.shop : []
+        });
+
+        const fotoSnap = await getDocs(collection(db, "foto"));
+        setFotoList(fotoSnap.docs.map(doc => ({ id: doc.id, src: doc.data().src })));
+      } catch (e) {
+        console.error("Errore caricamento:", e);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchData();
   }, []);
@@ -83,7 +98,7 @@ export default function AdminPage() {
 
       {view === 'calendario' && (
         <div>
-          {(data.calendario || []).map((c: any, i: number) => (
+          {data.calendario.map((c: any, i: number) => (
             <div key={i} style={{marginBottom: '20px', border: '1px solid #555', padding: '15px', background: '#222', borderRadius: '8px'}}>
               <input value={c.title || ''} onChange={(e) => { const n = [...data.calendario]; n[i].title = e.target.value; setData({...data, calendario: n}); }} style={inputStyle} placeholder="Nome Concerto" />
               <input type="date" value={c.start || ''} onChange={(e) => { const n = [...data.calendario]; n[i].start = e.target.value; setData({...data, calendario: n}); }} style={inputStyle} />
@@ -96,7 +111,7 @@ export default function AdminPage() {
               <button onClick={() => setData({...data, calendario: data.calendario.filter((_:any, idx:number) => idx !== i)})} style={{marginTop: '10px', background: '#700', color: '#fff', padding: '8px', cursor: 'pointer'}}>Elimina</button>
             </div>
           ))}
-          <button onClick={() => setData({...data, calendario: [...(data.calendario || []), {title: '', start: '', location: '', tipo: 'RL', link: ''}]})}>+ Aggiungi Concerto</button>
+          <button onClick={() => setData({...data, calendario: [...data.calendario, {title: '', start: '', location: '', tipo: 'RL', link: ''}]})}>+ Aggiungi Concerto</button>
         </div>
       )}
 
