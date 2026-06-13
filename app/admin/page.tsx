@@ -9,7 +9,7 @@ export default function AdminPage() {
   const [fotoList, setFotoList] = useState<{id: string, src: string}[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const inputStyle = { width: '100%', padding: '12px', marginTop: '8px', background: '#333', color: '#fff', border: '1px solid #555', borderRadius: '4px' };
+  const inputStyle = { width: '100%', padding: '12px', marginTop: '8px', background: '#333', color: '#fff', border: '1px solid #555', borderRadius: '4px', pointerEvents: 'auto' as const };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,7 +30,7 @@ export default function AdminPage() {
       oggi.setHours(0, 0, 0, 0);
       const datiPuliti = {
         ...data,
-        calendario: data.calendario.filter((c: any) => new Date(c.start) >= oggi)
+        calendario: (data.calendario || []).filter((c: any) => new Date(c.start) >= oggi)
       };
       await setDoc(doc(db, "content", "Eddie Santillo"), datiPuliti);
       setData(datiPuliti);
@@ -91,21 +91,31 @@ export default function AdminPage() {
       )}
 
       {view === 'calendario' && (
-        <div>
+        <div style={{ pointerEvents: 'auto' }}>
           {(data.calendario || []).map((c: any, i: number) => (
-            <div key={i} style={{marginBottom: '20px', border: '1px solid #555', padding: '15px', background: '#222', borderRadius: '8px'}}>
+            <div key={i} style={{marginBottom: '20px', border: '1px solid #555', padding: '20px', background: '#222', borderRadius: '8px'}}>
+              <label style={{display: 'block', color: '#aaa'}}>Nome Concerto</label>
               <input value={c.title || ''} onChange={(e) => { const n = [...data.calendario]; n[i].title = e.target.value; setData({...data, calendario: n}); }} style={inputStyle} placeholder="Nome Concerto" />
+              
+              <label style={{display: 'block', marginTop: '10px', color: '#aaa'}}>Data</label>
               <input type="date" value={c.start || ''} onChange={(e) => { const n = [...data.calendario]; n[i].start = e.target.value; setData({...data, calendario: n}); }} style={inputStyle} />
+              
+              <label style={{display: 'block', marginTop: '10px', color: '#aaa'}}>Luogo</label>
               <input value={c.location || ''} onChange={(e) => { const n = [...data.calendario]; n[i].location = e.target.value; setData({...data, calendario: n}); }} style={inputStyle} placeholder="Luogo" />
+              
+              <label style={{display: 'block', marginTop: '10px', color: '#aaa'}}>Tipo</label>
               <select value={c.tipo || 'RL'} onChange={(e) => { const n = [...data.calendario]; n[i].tipo = e.target.value; setData({...data, calendario: n}); }} style={inputStyle}>
                 <option value="RL">RL</option>
                 <option value="SL">SL</option>
               </select>
+              
+              <label style={{display: 'block', marginTop: '10px', color: '#aaa'}}>Link</label>
               <input value={c.link || ''} onChange={(e) => { const n = [...data.calendario]; n[i].link = e.target.value; setData({...data, calendario: n}); }} style={inputStyle} placeholder="Link (URL)" />
-              <button onClick={() => setData({...data, calendario: data.calendario.filter((_:any, idx:number) => idx !== i)})} style={{marginTop: '10px', background: '#700', color: '#fff', padding: '8px', cursor: 'pointer'}}>Elimina</button>
+              
+              <button onClick={() => setData({...data, calendario: data.calendario.filter((_:any, idx:number) => idx !== i)})} style={{marginTop: '15px', background: '#700', color: '#fff', padding: '10px', width: '100%', cursor: 'pointer'}}>Elimina</button>
             </div>
           ))}
-          <button onClick={() => setData({...data, calendario: [...(data.calendario || []), {title: '', start: '', location: '', tipo: 'RL', link: ''}]})}>+ Aggiungi Concerto</button>
+          <button onClick={() => setData({...data, calendario: [...(data.calendario || []), {title: '', start: '', location: '', tipo: 'RL', link: ''}]})} style={{padding: '15px', width: '100%', background: '#dca355', cursor: 'pointer'}}>+ Aggiungi Concerto</button>
         </div>
       )}
 
