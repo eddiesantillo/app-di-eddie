@@ -59,8 +59,8 @@ export default function Home() {
         <Link href="/player"><img src="/radio.jpeg" alt="Radio" style={iconStyle} /></Link>
         <Link href="/social"><img src="/social.jpeg" alt="Social" style={iconStyle} /></Link>
         
-        {/* Pulsante FOTO aggiunto correttamente in griglia */}
-        <Link href="/foto"><img src="/gallery.jpeg" alt="Foto" style={iconStyle} /></Link>
+        {/* Pulsante FOTO corretto con nome file foto.jpeg */}
+        <Link href="/foto"><img src="/foto.jpeg" alt="Foto" style={iconStyle} /></Link>
         
         <Link href="/music-shop"><img src="/music_shop.jpeg" alt="Music Shop" style={iconStyle} /></Link>
       </div>
