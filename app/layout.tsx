@@ -1,14 +1,8 @@
-'use client';
 import './globals.css';
-import { usePathname } from 'next/navigation';
+import InstallBanner from './components/InstallBanner';
+import HeaderWrapper from './components/HeaderWrapper'; // Nuovo componente
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
-  
-  const isHome = pathname === '/';
-  const isSocialPage = pathname === '/social';
-  const showHeader = !isHome && !isSocialPage;
-
   return (
     <html lang="it">
       <head>
@@ -16,22 +10,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="theme-color" content="#1a1a1a" />
       </head>
       <body style={{ backgroundColor: '#1a1a1a', color: '#ffffff', fontFamily: 'Arial, sans-serif', margin: 0, padding: 0 }}>
-        
-        {showHeader && (
-          <header style={{ padding: '40px 20px', textAlign: 'center' }}>
-            <img src="/logo.png" alt="Logo Eddie Santillo" style={{ width: '150px', display: 'block', margin: '0 auto' }} />
-            <h1 style={{ marginTop: '25px', fontSize: '2rem' }}>Eddie Santillo</h1>
-          </header>
-        )}
-
+        <InstallBanner />
+        <HeaderWrapper />
         <main style={{ maxWidth: '800px', margin: '0 auto' }}>
           {children}
         </main>
-        
         <footer style={{ marginTop: '50px', textAlign: 'center', fontSize: '0.8rem', opacity: 0.6 }}>
           <p>© {new Date().getFullYear()} Eddie Santillo. Tutti i diritti riservati.</p>
         </footer>
       </body>
     </html>
-  )
+  );
 }
