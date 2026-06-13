@@ -27,7 +27,7 @@ export default function Home() {
         textTransform: 'uppercase',
         letterSpacing: '0.5px',
         textShadow: '1px 1px 0px #000',
-        maxWidth: '350px',
+        maxWidth: '300px',
         lineHeight: '1.3'
       }}>
         Dalle radici del blues alle vette dell'hard rock:<br/>
@@ -59,10 +59,13 @@ export default function Home() {
         <Link href="/player"><img src="/radio.jpeg" alt="Radio" style={iconStyle} /></Link>
         <Link href="/social"><img src="/social.jpeg" alt="Social" style={iconStyle} /></Link>
         
-        {/* Nuova sezione FOTO affiancata al Music Shop */}
-        <Link href="/foto"><img src="/foto.jpeg" alt="Foto" style={iconStyle} /></Link>
+        {/* Pulsante FOTO aggiunto correttamente in griglia */}
+        <Link href="/foto"><img src="/gallery.jpeg" alt="Foto" style={iconStyle} /></Link>
+        
         <Link href="/music-shop"><img src="/music_shop.jpeg" alt="Music Shop" style={iconStyle} /></Link>
       </div>
+
+      {/* //prova */}
     </main>
   );
 }
