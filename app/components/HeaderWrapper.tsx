@@ -3,12 +3,17 @@ import { usePathname } from 'next/navigation';
 
 export default function HeaderWrapper() {
   const pathname = usePathname();
+  
+  // Debug: controlla nel terminale cosa legge esattamente il pathname
+  console.log("Current path:", pathname);
+
   const isHome = pathname === '/';
   const isSocialPage = pathname === '/social';
-  const isPlayerPage = pathname === '/player'; // Aggiungiamo la condizione per il player
+  const isPlayerPage = pathname === '/player';
+  // Usiamo includes per essere sicuri di intercettare il percorso anche se ci sono barre strane
+  const isShopPage = pathname.includes('/music-shop');
   
-  // L'header viene mostrato solo se NON è home, NON è social e NON è player
-  const showHeader = !isHome && !isSocialPage && !isPlayerPage;
+  const showHeader = !isHome && !isSocialPage && !isPlayerPage && !isShopPage;
 
   if (!showHeader) return null;
 
