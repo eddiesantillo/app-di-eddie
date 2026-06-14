@@ -46,7 +46,7 @@ export default function Home() {
         />
       </div>
 
-      {/* Griglia Icone Aggiornata con FOTO */}
+      {/* Griglia Icone Aggiornata con REPERTORIO */}
       <div style={{ 
         display: 'grid', 
         gridTemplateColumns: 'repeat(2, 1fr)', 
@@ -58,14 +58,13 @@ export default function Home() {
         <Link href="/appuntamenti"><img src="/appuntamenti.jpeg" alt="Appuntamenti" style={iconStyle} /></Link>
         <Link href="/player"><img src="/radio.jpeg" alt="Radio" style={iconStyle} /></Link>
         <Link href="/social"><img src="/social.jpeg" alt="Social" style={iconStyle} /></Link>
-        
-        {/* Pulsante FOTO corretto con nome file foto.jpeg */}
         <Link href="/foto"><img src="/foto.jpeg" alt="Foto" style={iconStyle} /></Link>
-        
         <Link href="/music-shop"><img src="/music_shop.jpeg" alt="Music Shop" style={iconStyle} /></Link>
+        
+        {/* Nuovo pulsante Repertorio */}
+        <Link href="/repertorio"><img src="/repertorio.jpeg" alt="Repertorio" style={iconStyle} /></Link>
       </div>
-
-      {/* //prova */}
+      
     </main>
   );
 }
