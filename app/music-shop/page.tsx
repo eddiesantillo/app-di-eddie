@@ -17,8 +17,21 @@ export default function ShopPage() {
   }, []);
 
   return (
-    <main style={{ padding: '50px', textAlign: 'center', color: '#fff', fontFamily: 'sans-serif' }}>
-      <h1>Il Mio Shop</h1>
+    <main style={{ padding: '50px 20px', textAlign: 'center', color: '#fff', fontFamily: 'Arial, sans-serif' }}>
+      
+      {/* Testo di benvenuto rimpicciolito ed elegante */}
+      <h1 style={{ 
+        marginBottom: '40px', 
+        fontSize: '1.2rem', 
+        lineHeight: '1.6', 
+        maxWidth: '500px', 
+        margin: '0 auto 40px auto', 
+        fontWeight: 'normal',
+        opacity: 0.9 
+      }}>
+        Benvenuto nel mio negozio online. Esplora la mia discografia e acquista i tuoi album preferiti.
+      </h1>
+
       <div style={{ marginTop: '30px', display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'center' }}>
         {shopItems.map((item, index) => (
           <a 
