@@ -16,44 +16,54 @@ export default function ContattiPage() {
     fetchData();
   }, []);
 
-  // Funzione per decidere se rendere il link cliccabile
-  const renderValore = (titolo: string, valore: string) => {
-    if (titolo.toLowerCase().includes('telefono') || titolo.toLowerCase().includes('cell')) {
-      const tel = valore.replace(/\s/g, ''); // Rimuove spazi per il link tel:
-      return <a href={`tel:${tel}`} style={{ color: '#dca355', textDecoration: 'none' }}>{valore}</a>;
+  // Funzione che ritorna un array di bottoni per ogni contatto
+  const getButtons = (titolo: string, valore: string) => {
+    const t = titolo.toLowerCase();
+    const v = valore.replace(/\s/g, ''); // Pulizia numero
+    const buttons = [];
+
+    if (t.includes('telefono') || t.includes('cell')) {
+      buttons.push({ href: `tel:${v}`, text: 'Chiama' });
+      buttons.push({ href: `https://wa.me/${v.replace('+', '')}`, text: 'Scrivi su WhatsApp' });
+    } else if (t.includes('email')) {
+      buttons.push({ href: `mailto:${valore}`, text: 'Invia Email' });
     }
-    if (titolo.toLowerCase().includes('email') || valore.includes('@')) {
-      return <a href={`mailto:${valore}`} style={{ color: '#dca355', textDecoration: 'none' }}>{valore}</a>;
-    }
-    return valore;
+    
+    return buttons;
   };
 
   return (
     <main style={{ padding: '40px 20px', color: '#fff', maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
       
-      {/* Tasto Indietro */}
       <a href="/" style={{ 
-        display: 'inline-block', 
-        marginBottom: '30px', 
-        color: '#dca355', 
-        textDecoration: 'none', 
-        fontSize: '0.9rem',
-        border: '1px solid #dca355',
-        padding: '8px 16px',
-        borderRadius: '20px'
+        display: 'inline-block', marginBottom: '30px', color: '#dca355', 
+        textDecoration: 'none', fontSize: '0.9rem', border: '1px solid #dca355',
+        padding: '8px 16px', borderRadius: '20px'
       }}>
         ← Torna alla Home
       </a>
 
       <h1 style={{ marginBottom: '30px' }}>CONTATTI</h1>
       
-      <div style={{ background: '#252525', padding: '30px', borderRadius: '12px' }}>
-        {contatti.map((c: any, i: number) => (
-          <p key={i} style={{ fontSize: '1.2rem', marginBottom: '20px' }}>
-            <strong style={{ display: 'block', marginBottom: '5px', opacity: 0.7, fontSize: '0.9rem' }}>{c.titolo}</strong> 
-            {renderValore(c.titolo, c.valore)}
-          </p>
-        ))}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+        {contatti.map((c: any, i: number) => {
+          const btns = getButtons(c.titolo, c.valore);
+          return (
+            <div key={i} style={{ background: '#252525', padding: '20px', borderRadius: '12px' }}>
+              <p style={{ margin: '0 0 15px 0', opacity: 0.8 }}>{c.titolo}: {c.valore}</p>
+              <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                {btns.map((btn, index) => (
+                  <a key={index} href={btn.href} style={{ 
+                    padding: '10px 20px', background: '#dca355',
+                    color: '#1a1a1a', borderRadius: '8px', textDecoration: 'none', fontWeight: 'bold'
+                  }}>
+                    {btn.text}
+                  </a>
+                ))}
+              </div>
+            </div>
+          );
+        })}
       </div>
     </main>
   );
