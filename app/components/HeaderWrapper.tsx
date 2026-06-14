@@ -5,7 +5,10 @@ export default function HeaderWrapper() {
   const pathname = usePathname();
   const isHome = pathname === '/';
   const isSocialPage = pathname === '/social';
-  const showHeader = !isHome && !isSocialPage;
+  const isPlayerPage = pathname === '/player'; // Aggiungiamo la condizione per il player
+  
+  // L'header viene mostrato solo se NON è home, NON è social e NON è player
+  const showHeader = !isHome && !isSocialPage && !isPlayerPage;
 
   if (!showHeader) return null;
 
