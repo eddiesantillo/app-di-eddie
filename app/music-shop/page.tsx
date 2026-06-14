@@ -19,7 +19,21 @@ export default function ShopPage() {
   return (
     <main style={{ padding: '50px 20px', textAlign: 'center', color: '#fff', fontFamily: 'Arial, sans-serif' }}>
       
-      {/* Testo di benvenuto rimpicciolito ed elegante */}
+      {/* Tasto Indietro */}
+      <a href="/" style={{ 
+        display: 'inline-block', 
+        marginBottom: '30px', 
+        color: '#dca355', 
+        textDecoration: 'none', 
+        fontSize: '0.9rem',
+        border: '1px solid #dca355',
+        padding: '8px 16px',
+        borderRadius: '20px'
+      }}>
+        ← Torna alla Home
+      </a>
+      
+      {/* Testo di benvenuto */}
       <h1 style={{ 
         marginBottom: '40px', 
         fontSize: '1.2rem', 
