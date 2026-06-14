@@ -66,13 +66,30 @@ export default function AdminPage() {
         <div style={cardStyle}>
           <button onClick={() => setActiveSection(null)} style={{ background: 'transparent', color: '#888', border: 'none', marginBottom: '20px', cursor: 'pointer' }}>← Torna al menù</button>
           
-          {activeSection === 'bio' && (<div><h2>Gestione Bio</h2>{(data.bio || []).map((b: any, i: number) => (<div key={i}><input value={b.titolo || ''} onChange={(e) => {const n = [...data.bio]; n[i].titolo = e.target.value; setData({...data, bio: n})}} style={inputStyle}/><textarea value={b.testo || ''} onChange={(e) => {const n = [...data.bio]; n[i].testo = e.target.value; setData({...data, bio: n})}} style={{...inputStyle, height: '100px'}}/></div>))}</div>)}
+          {/* Sezione BIO Dinamica */}
+          {activeSection === 'bio' && (
+            <div>
+              <h2>Gestione Bio</h2>
+              {(data.bio || []).map((b: any, i: number) => (
+                <div key={i} style={{ border: '1px solid #444', padding: '15px', marginBottom: '15px', borderRadius: '8px' }}>
+                  <input placeholder="Titolo sezione" value={b.titolo || ''} onChange={(e) => {const n = [...data.bio]; n[i].titolo = e.target.value; setData({...data, bio: n})}} style={inputStyle}/>
+                  <textarea placeholder="Testo della sezione" value={b.testo || ''} onChange={(e) => {const n = [...data.bio]; n[i].testo = e.target.value; setData({...data, bio: n})}} style={{...inputStyle, height: '100px'}}/>
+                  <button onClick={() => setData({...data, bio: data.bio.filter((_:any, idx:number) => idx !== i)})} style={{background: '#721c24', color: '#fff', ...buttonStyle}}>Elimina Sezione</button>
+                </div>
+              ))}
+              <button onClick={() => setData({...data, bio: [...(data.bio || []), {titolo: '', testo: ''}]})} style={{background: '#28a745', color: '#fff', ...buttonStyle, width: '100%'}}>+ Aggiungi Sezione Bio</button>
+            </div>
+          )}
+
           {activeSection === 'radio' && (<div><h2>Radio URL</h2><input value={data.radio?.url || ''} onChange={(e) => setData({...data, radio: {...data.radio, url: e.target.value}})} style={inputStyle}/></div>)}
+          
           {activeSection === 'calendario' && (<div><h2>Gestione Eventi</h2>{(data.calendario || []).map((c: any, i: number) => (<div key={i} style={{border: '1px solid #444', padding: '15px', marginBottom: '15px', borderRadius: '8px'}}><input placeholder="Nome" value={c.nome || ''} onChange={(e) => {const n = [...data.calendario]; n[i].nome = e.target.value; setData({...data, calendario: n})}} style={inputStyle}/><input placeholder="Giorno" value={c.giorno || ''} onChange={(e) => {const n = [...data.calendario]; n[i].giorno = e.target.value; setData({...data, calendario: n})}} style={inputStyle}/><input placeholder="Ora" value={c.ora || ''} onChange={(e) => {const n = [...data.calendario]; n[i].ora = e.target.value; setData({...data, calendario: n})}} style={inputStyle}/><input placeholder="Tipo (SL/RL)" value={c.tipo || ''} onChange={(e) => {const n = [...data.calendario]; n[i].tipo = e.target.value; setData({...data, calendario: n})}} style={inputStyle}/><input placeholder="Link" value={c.link || ''} onChange={(e) => {const n = [...data.calendario]; n[i].link = e.target.value; setData({...data, calendario: n})}} style={inputStyle}/><button onClick={() => setData({...data, calendario: data.calendario.filter((_:any, idx:number) => idx !== i)})} style={{background: '#721c24', color: '#fff', ...buttonStyle}}>Elimina</button></div>))} <button onClick={() => setData({...data, calendario: [...(data.calendario || []), {nome: '', giorno: '', ora: '', tipo: '', link: ''}]})} style={{background: '#28a745', color: '#fff', ...buttonStyle, width: '100%'}}>+ Aggiungi Evento</button></div>)}
+          
           {activeSection === 'social' && (<div><h2>Gestione Social</h2>{(data.social || []).map((s: any, i: number) => (<div key={i} style={{marginBottom: '15px', padding: '10px', border: '1px solid #444', borderRadius: '8px'}}><input placeholder="Nome" value={s.nome || ''} onChange={(e) => {const n = [...data.social]; n[i].nome = e.target.value; setData({...data, social: n})}} style={inputStyle}/><input placeholder="URL" value={s.url || ''} onChange={(e) => {const n = [...data.social]; n[i].url = e.target.value; setData({...data, social: n})}} style={inputStyle}/><button onClick={() => setData({...data, social: data.social.filter((_:any, idx:number) => idx !== i)})} style={{background: '#721c24', color: '#fff', ...buttonStyle}}>Elimina</button></div>))} <button onClick={() => setData({...data, social: [...(data.social || []), {nome: '', url: ''}]})} style={{background: '#28a745', color: '#fff', ...buttonStyle, width: '100%'}}>+ Aggiungi Social</button></div>)}
+          
           {activeSection === 'repertorio' && (<div><h2>Gestione Repertorio</h2><textarea value={data.repertorio || ''} onChange={(e) => setData({...data, repertorio: e.target.value})} style={{...inputStyle, height: '400px', whiteSpace: 'pre'}} /></div>)}
           
-          {/* Gestione Contatti Array */}
+          {/* Sezione CONTATTI Dinamica */}
           {activeSection === 'contatti' && (
             <div>
               <h2>Gestione Contatti</h2>
@@ -80,10 +97,10 @@ export default function AdminPage() {
                 <div key={i} style={{ border: '1px solid #444', padding: '15px', marginBottom: '15px', borderRadius: '8px' }}>
                   <input placeholder="Titolo" value={c.titolo || ''} onChange={(e) => {const n = [...data.contatti]; n[i].titolo = e.target.value; setData({...data, contatti: n})}} style={inputStyle}/>
                   <input placeholder="Valore" value={c.valore || ''} onChange={(e) => {const n = [...data.contatti]; n[i].valore = e.target.value; setData({...data, contatti: n})}} style={inputStyle}/>
-                  <button onClick={() => setData({...data, contatti: data.contatti.filter((_:any, idx:number) => idx !== i)})} style={{background: '#721c24', color: '#fff', ...buttonStyle}}>Elimina</button>
+                  <button onClick={() => setData({...data, contatti: data.contatti.filter((_:any, idx:number) => idx !== i)})} style={{background: '#721c24', color: '#fff', ...buttonStyle}}>Elimina Contatto</button>
                 </div>
               ))}
-              <button onClick={() => setData({...data, contatti: [...(data.contatti || []), {titolo: '', valore: ''}]})} style={{background: '#28a745', color: '#fff', ...buttonStyle, width: '100%'}}>+ Aggiungi</button>
+              <button onClick={() => setData({...data, contatti: [...(data.contatti || []), {titolo: '', valore: ''}]})} style={{background: '#28a745', color: '#fff', ...buttonStyle, width: '100%'}}>+ Aggiungi Contatto</button>
             </div>
           )}
 
