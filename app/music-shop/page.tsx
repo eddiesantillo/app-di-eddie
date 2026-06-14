@@ -19,23 +19,29 @@ export default function ShopPage() {
   return (
     <main style={{ padding: '50px', textAlign: 'center', color: '#fff', fontFamily: 'sans-serif' }}>
       <h1>Il Mio Shop</h1>
-      <div style={{ marginTop: '30px', display: 'flex', flexDirection: 'column', gap: '15px', alignItems: 'center' }}>
+      <div style={{ marginTop: '30px', display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'center' }}>
         {shopItems.map((item, index) => (
           <a 
             key={index} 
             href={item.url} 
             target="_blank" 
             style={{ 
-              padding: '15px 30px', 
-              background: '#d4af37', 
-              color: '#000', 
-              textDecoration: 'none', 
-              borderRadius: '8px', 
-              fontWeight: 'bold',
-              width: '200px'
+              display: 'block',
+              transition: 'transform 0.2s'
             }}
+            onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+            onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
           >
-            {item.titolo}
+            <img 
+              src={`/${item.titolo.toLowerCase()}.jpeg`} 
+              alt={item.titolo} 
+              style={{ 
+                width: '200px', 
+                height: 'auto', 
+                borderRadius: '8px',
+                display: 'block'
+              }}
+            />
           </a>
         ))}
       </div>
