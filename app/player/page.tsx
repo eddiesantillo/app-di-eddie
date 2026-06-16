@@ -74,7 +74,7 @@ export default function PlayerPage() {
         <img src="/play-btn.png" alt="Play Radio" style={{ width: '300px', height: 'auto' }} />
       </div>
 
-      {/* Controllo Volume */}
+      {/* Controllo Volume - Utilizza la classe personalizzata definita in globals.css */}
       <div style={{ marginBottom: '40px', display: 'flex', alignItems: 'center', gap: '15px' }}>
         <span>🔈</span>
         <input 
@@ -88,7 +88,8 @@ export default function PlayerPage() {
             setVolume(v);
             if (audioRef.current) audioRef.current.volume = v;
           }}
-          style={{ width: '150px', cursor: 'pointer', accentColor: '#dca355' }}
+          className="custom-volume-slider"
+          style={{ width: '150px', cursor: 'pointer' }}
         />
         <span>🔊</span>
       </div>
