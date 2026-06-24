@@ -1,6 +1,7 @@
 import './globals.css';
 import InstallBanner from './components/InstallBanner';
 import HeaderWrapper from './components/HeaderWrapper'; // Nuovo componente
+import { Analytics } from '@vercel/analytics/next';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -18,6 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <footer style={{ marginTop: '50px', textAlign: 'center', fontSize: '0.8rem', opacity: 0.6 }}>
           <p>© {new Date().getFullYear()} Eddie Santillo. Tutti i diritti riservati.</p>
         </footer>
+        <Analytics />
       </body>
     </html>
   );
