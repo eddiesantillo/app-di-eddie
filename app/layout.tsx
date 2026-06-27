@@ -1,7 +1,7 @@
 import './globals.css';
 import InstallBanner from './components/InstallBanner';
 import HeaderWrapper from './components/HeaderWrapper'; // Nuovo componente
-import { Analytics } from '@vercel/analytics/next';
+import { Analytics } from '@vercel/analytics/react';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
