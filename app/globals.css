@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Stile personalizzato per la barra volume arancione */
+.custom-volume-slider {
+  appearance: none !important;
+  background: #dca355 !important; 
+  height: 12px !important;
+  border-radius: 6px !important;
+  outline: none !important;
+}
+
+/* Cursore: chitarra su sfondo nero */
+.custom-volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 50px;
+  height: 50px;
+  background-color: #000;
+  background-image: url('/guitar-cursor.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 70%;
+  border: 3px solid #dca355;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  transition: transform 0.2s;
+}
+
+.custom-volume-slider::-webkit-slider-thumb:active {
+  transform: scale(1.1);
+}
+
+/* Supporto per Firefox */
+.custom-volume-slider::-moz-range-thumb {
+  width: 50px;
+  height: 50px;
+  background-color: #000;
+  background-image: url('/guitar-cursor.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 70%;
+  border: 3px solid #dca355;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
