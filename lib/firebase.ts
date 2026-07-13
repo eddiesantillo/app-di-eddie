@@ -3,7 +3,6 @@ import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-<<<<<<< HEAD
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
@@ -12,17 +11,6 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
 };
 
-=======
-  apiKey: "AIzaSyCLmQnAGNbCgFYKzPPd5aCnUHKf_SlI1Es",
-  authDomain: "eddiesantilloapp.firebaseapp.com",
-  projectId: "eddiesantilloapp",
-  storageBucket: "eddiesantilloapp.firebasestorage.app",
-  messagingSenderId: "1019037443128",
-  appId: "1:1019037443128:web:85957edf2415a14afd72cd"
-};
-
-// Inizializza Firebase solo nel browser
->>>>>>> 1db3580c8fa366573bd50bf4686deac6fc7b97ce
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
 export const db = getFirestore(app);
