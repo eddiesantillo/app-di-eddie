@@ -1,6 +1,6 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { getAuth, initializeAuth, browserLocalPersistence } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -15,7 +15,5 @@ const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
 export const db = getFirestore(app);
 
-// Inizializzazione sicura di Auth che evita il conflitto di parsing con undici in ambiente server/build
-export const auth = !getApps().length || typeof window !== 'undefined' 
-  ? getAuth(app) 
-  : getAuth(app);
+// Inizializza Auth solo se siamo nel browser, evitando il blocco di undici sul server
+export const auth = typeof window !== "undefined" ? getAuth(app) : ({} as any);
