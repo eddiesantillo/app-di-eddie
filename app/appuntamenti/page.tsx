@@ -28,8 +28,15 @@ export default function Appuntamenti() {
             const giornoNum = parseInt(parti[0], 10);
             const meseStr = parti[1];
             const meseNum = mesiMap[meseStr];
+
+            let annoNum = 2026; // Default di fallback per i vecchi appuntamenti
+            const parteAnno = parti.find(p => /^\d{4}$/.test(p));
+            if (parteAnno) {
+              annoNum = parseInt(parteAnno, 10);
+            }
+
             if (!isNaN(giornoNum) && meseNum !== undefined) {
-              return new Date(2026, meseNum, giornoNum);
+              return new Date(annoNum, meseNum, giornoNum);
             }
           }
           return new Date(9999, 0, 1);
@@ -51,10 +58,12 @@ export default function Appuntamenti() {
   oggi.setHours(0, 0, 0, 0);
 
   const attiviRL = concerti.filter(c => c.tipo === 'RL' && c._dataParsed >= oggi);
-  const passatiRL = concerti.filter(c => c.tipo === 'RL' && c._dataParsed < oggi);
+  const passatiRL = concerti.filter(c => c.tipo === 'RL' && c._dataParsed < oggi)
+                            .sort((a, b) => b._dataParsed.getTime() - a._dataParsed.getTime());
   
   const attiviSL = concerti.filter(c => c.tipo === 'SL' && c._dataParsed >= oggi);
-  const passatiSL = concerti.filter(c => c.tipo === 'SL' && c._dataParsed < oggi);
+  const passatiSL = concerti.filter(c => c.tipo === 'SL' && c._dataParsed < oggi)
+                            .sort((a, b) => b._dataParsed.getTime() - a._dataParsed.getTime());
 
   const renderEvento = (c: any, index: number) => (
     <div key={index} style={{ background: '#1a1a1a', padding: '15px', margin: '15px 0', border: `1px solid ${c.tipo === 'SL' ? '#66ccff' : '#dca355'}`, borderRadius: '8px' }}>
